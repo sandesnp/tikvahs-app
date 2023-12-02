@@ -2,30 +2,9 @@ const express = require('express');
 const USER = require('../models/user');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const {
-  checkAuthenticated,
-  checkNotAuthenticated,
-} = require('./auth-middleware');
+const passport = require('passport');
+const { checkAuthenticated } = require('./auth-middleware');
 
-router.post('/login', async (req, res, next) => {
-  USER.findOne({ email: req.body.email }).then((user) => {
-    if (user === null) {
-      let err = new Error('User not found');
-      err.status = 401;
-      res.json({ status: false, message: 'User not found' });
-      return next(err);
-    }
-    bcrypt.compare(req.body.password, user.password, function (err, status) {
-      if (!status) {
-        let err = new Error('Password does not match!');
-        err.status = 401;
-        res.json({ status: false, message: 'Password does not match!' });
-        return next(err);
-      }
-      res.json({ status: true, message: 'Login Success' });
-    });
-  });
-});
 router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
   console.log(req.user);
   //check first if the sent passwords match or not.
@@ -55,6 +34,38 @@ router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
     }
   });
 });
+
+//login local
+router.post(
+  '/login',
+  passport.authenticate('local', {
+    failureRedirect: '/',
+  }),
+  function (req, res, next) {
+    //if successfully login
+    res.status(200).json({ status: true, message: 'Successfully logged in!' });
+  }
+);
+
+//Triggers google request consuming the first parameter provided in the google strategy.
+router.get(
+  '/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] }) //scope declaration as scpecified in google api
+);
+
+//User gets redirected to below link after successful login after which the second callback function
+//in the google strategy gets triggered.
+router.get(
+  '/auth/google/secrets',
+  passport.authenticate('google', {
+    failureRedirect: process.env.CLIENT_LINK + '/login',
+  }),
+  function (req, res) {
+    // Successful authentication, redirect dashboard.
+    if (req.user.password) return res.redirect(process.env.CLIENT_LINK + '/');
+    res.redirect(process.env.CLIENT_LINK + '/user/createpassword');
+  }
+);
 
 router.get('/logout', checkAuthenticated, function (req, res) {
   req.logout((err) => {

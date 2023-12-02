@@ -45,22 +45,9 @@ require('./passport').auth(passport);
 
 app.use('/api/user', User);
 
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['email', 'profile'] }) //scope declaration as scpecified in google api
-);
-
-app.get(
-  '/auth/google/secrets',
-  passport.authenticate('google', {
-    failureRedirect: process.env.CLIENT_LINK + '/login',
-  }),
-  function (req, res) {
-    // Successful authentication, redirect dashboard.
-    if (req.user.password) return res.redirect(process.env.CLIENT_LINK + '/');
-    res.redirect(process.env.CLIENT_LINK + '/user/createpassword');
-  }
-);
+app.get('/check', function (req, res) {
+  res.redirect('/');
+});
 
 app.use(express.static(__dirname + '/client/build'));
 //except for api requests all other requests will be listened by client
