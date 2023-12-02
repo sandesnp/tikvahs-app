@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 
 export default function Login() {
   const [user, setUser] = useState({ email: '', password: '' });
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -10,7 +12,9 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await Axios.post('/api/user/login', user);
-    console.log(response.data);
+    //Since i couldn't access the passportjs failure message, i did a workaround. I added status
+    //property in the response if the login is positive. So status will only exist if the login is made.
+    if (response.data.status) return navigate('/');
   };
 
   return (
