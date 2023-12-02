@@ -1,0 +1,56 @@
+/*
+0- 600px; Phone
+600 - 900px; Table portrait
+900 - 1200px; Tablet landscape
+[1200 - 2000} is where our normal styles apply
+2000px + : big desktop
+*/
+
+@mixin respond($breakpoint) {
+  @if $breakpoint==phone {
+    //600px
+    @media only screen and (max-width: 37.5em) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-port {
+    //900px
+    @media only screen and (max-width: 56.25em) {
+      @content;
+    }
+  }
+  @if $breakpoint==tab-land {
+    //1200px
+    @media only screen and (max-width: 75em) {
+      @content;
+    }
+  }
+  @if $breakpoint==desktop {
+    //2000px
+    @media only screen and (max-width: 125em) {
+      @content;
+    }
+  }
+  @if $breakpoint==big-desktop {
+    //2000px
+    @media only screen and (min-width: 125em) {
+      @content;
+    }
+  }
+}
+
+@mixin darkenLink {
+  &:link,
+  &:visited {
+    text-decoration: none;
+    color: $color-black;
+  }
+}
+
+@mixin clearfix {
+  &::after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+}

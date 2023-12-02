@@ -1,0 +1,42 @@
+.pageproduct {
+  display: flex;
+
+  &__image {
+    flex: 1;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__information {
+    flex: 1;
+    margin-top: 5rem;
+    padding-left: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  &__name {
+    font-family: $font-title-B;
+    font-size: 5rem;
+    letter-spacing: 2px;
+    font-weight: 500;
+  }
+  &__price {
+    font-size: 3rem;
+  }
+  &__description {
+    font-family: $font-content;
+
+    letter-spacing: 2px;
+    line-height: 2;
+  }
+  &__button {
+    font-size: 3rem;
+    padding: 1.5rem 3rem;
+    background-color: orange;
+    font-family: $font-title-B;
+  }
+}

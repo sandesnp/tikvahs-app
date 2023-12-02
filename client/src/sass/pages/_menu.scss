@@ -1,0 +1,25 @@
+.menu {
+  padding-top: 5rem;
+  padding-left: 20rem;
+  &__title {
+    font-family: $font-title-A;
+    font-weight: 600;
+    font-size: 5rem;
+  }
+  &__subheading {
+    font-family: $font-title-B;
+    color: $color-gray;
+    font-size: 2rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: $color-orange;
+  }
+  &__list {
+    margin-top: 5rem;
+  }
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 5rem;
+    }
+  }
+}

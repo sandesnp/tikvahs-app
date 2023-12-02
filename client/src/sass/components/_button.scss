@@ -1,0 +1,63 @@
+%btn-anim {
+  position: relative;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 50%;
+    transition: all 0.3s;
+  }
+  &::before {
+    top: 0;
+    left: 0;
+    border-top: 2px solid $color-white;
+    border-left: 2px solid $color-white;
+  }
+  &::after {
+    bottom: 0;
+    right: 0;
+    border-bottom: 2px solid $color-white;
+    border-right: 2px solid $color-white;
+  }
+  &:hover::before,
+  &:hover::after,
+  &:focus::before,
+  &:focus::after {
+    width: 50%;
+    height: 60%;
+  }
+}
+
+%button {
+  outline: none;
+  border: none;
+  background-color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.button {
+  @extend %button;
+  &__anim {
+    @extend %btn-anim;
+    &--white {
+      @extend %btn-anim;
+      background-color: $color-white;
+      color: $color-black;
+      &:visited,
+      &:link {
+        background-color: $color-white;
+        color: $color-black;
+      }
+
+      &::before,
+      &::after {
+        border-color: $color-black;
+        border-width: 2px;
+      }
+      &:hover {
+        color: $color-black;
+      }
+    }
+  }
+}

@@ -1,0 +1,394 @@
+/*
+0- 600px; Phone
+600 - 900px; Table portrait
+900 - 1200px; Tablet landscape
+[1200 - 2000} is where our normal styles apply
+2000px + : big desktop
+*/
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+@media only screen and (max-width: 125em) {
+  html {
+    font-size: 62.5%;
+  }
+}
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 61.5%;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  html {
+    font-size: 60%;
+  }
+}
+@media only screen and (max-width: 37.5em) {
+  html {
+    font-size: 58%;
+  }
+}
+@media only screen and (min-width: 125em) {
+  html {
+    font-size: 65%;
+  }
+}
+
+body {
+  min-width: 380px;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "Roboto Serif", serif;
+}
+
+.product {
+  display: flex;
+  width: 70%;
+}
+.product__image {
+  flex: 0 25rem;
+}
+.product__image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.product__information {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-left: 5rem;
+}
+.product__upper-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product__name {
+  font-family: "Caveat", cursive;
+  font-size: 4.3rem;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+.product__name:link, .product__name:visited {
+  text-decoration: none;
+  color: #272829;
+}
+.product__price {
+  font-size: 2rem;
+}
+.product__description {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  line-height: 2;
+}
+
+.button__anim--white, .button__anim {
+  position: relative;
+}
+.button__anim--white::before, .button__anim::before, .button__anim--white::after, .button__anim::after {
+  content: "";
+  position: absolute;
+  width: 80%;
+  height: 50%;
+  transition: all 0.3s;
+}
+.button__anim--white::before, .button__anim::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid #f5f7f8;
+  border-left: 2px solid #f5f7f8;
+}
+.button__anim--white::after, .button__anim::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid #f5f7f8;
+  border-right: 2px solid #f5f7f8;
+}
+.button__anim--white:hover::before, .button__anim:hover::before, .button__anim--white:hover::after, .button__anim:hover::after, .button__anim--white:focus::before, .button__anim:focus::before, .button__anim--white:focus::after, .button__anim:focus::after {
+  width: 50%;
+  height: 60%;
+}
+
+.button {
+  outline: none;
+  border: none;
+  background-color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button__anim--white {
+  background-color: #f5f7f8;
+  color: #272829;
+}
+.button__anim--white:visited, .button__anim--white:link {
+  background-color: #f5f7f8;
+  color: #272829;
+}
+.button__anim--white::before, .button__anim--white::after {
+  border-color: #272829;
+  border-width: 2px;
+}
+.button__anim--white:hover {
+  color: #272829;
+}
+
+.row {
+  max-width: 114rem;
+  margin: 0 auto;
+}
+@media only screen and (max-width: 56.25em) {
+  .row {
+    max-width: 50rem;
+    padding: 0 3rem;
+  }
+}
+.row:not(:last-child) {
+  margin-bottom: 8rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .row:not(:last-child) {
+    margin-bottom: 6rem;
+  }
+}
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.row [class^=col-] {
+  float: left;
+}
+.row [class^=col-]:not(:last-child) {
+  margin-right: 6rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .row [class^=col-]:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 6rem;
+  }
+}
+@media only screen and (max-width: 56.25em) {
+  .row [class^=col-] {
+    width: 100% !important;
+  }
+}
+.row .col-1-of-2 {
+  width: calc((100% - 6rem) / 2);
+}
+.row .col-1-of-3 {
+  width: calc((100% - 12rem) / 3);
+}
+.row .col-2-of-3 {
+  width: calc(2 * (100% - 2 * 6rem) / 3 + 6rem);
+}
+.row .col-1-of-4 {
+  width: calc((100% - 18rem) / 4);
+}
+
+.nav {
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 2rem 5rem;
+  color: #272829;
+}
+.nav__title {
+  font-family: "Caveat", cursive;
+  font-weight: 700;
+  font-size: 4rem;
+  text-transform: uppercase;
+  position: relative;
+}
+.nav__title-icon {
+  position: absolute;
+  top: -3rem;
+  right: -1rem;
+}
+.nav__list {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+.nav__item:not(:first-child) {
+  margin-left: 4rem;
+}
+.nav__link {
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 500;
+}
+.nav__link:link, .nav__link:visited {
+  text-decoration: none;
+  color: #272829;
+}
+
+.active {
+  color: #fda769 !important;
+}
+
+.footer {
+  background-color: #272829;
+  padding: 5rem 0;
+  font-size: 1.4rem;
+  margin-top: 10rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer {
+    padding: 8rem 0;
+  }
+}
+.footer__logo-box {
+  text-align: center;
+  margin-bottom: 8rem;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__logo-box {
+    margin-bottom: 6rem;
+  }
+}
+.footer__logo {
+  text-align: center;
+  margin-bottom: 8rem;
+  font-family: "Caveat", cursive;
+  font-size: 15rem;
+  font-weight: 200;
+  color: #f5f7f8;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__logo {
+    margin-bottom: 6rem;
+  }
+}
+.footer__navigation {
+  border-top: 1px solid #d8d9da;
+  padding-top: 2rem;
+  display: inline-block;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__navigation {
+    width: 100%;
+    text-align: center;
+  }
+}
+.footer__list {
+  list-style: none;
+}
+.footer__item {
+  display: inline-block;
+}
+.footer__item:not(:last-child) {
+  margin-right: 1.5rem;
+}
+.footer__link:link, .footer__link:visited {
+  color: #f5f7f8;
+  background-color: #272829;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  transition: all 0.2s;
+}
+.footer__link:hover, .footer__link:active {
+  box-shadow: 0 1rem 2rem rgba(39, 40, 41, 0.4);
+  transform: rotate(5deg) scale(1.3);
+}
+.footer__copyright {
+  border-top: 1px solid #d8d9da;
+  padding-top: 2rem;
+  float: right;
+  color: #f5f7f8;
+}
+@media only screen and (max-width: 56.25em) {
+  .footer__copyright {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.app {
+  margin: 10rem 10rem 0 10rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+.menu {
+  padding-top: 5rem;
+  padding-left: 20rem;
+}
+.menu__title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 5rem;
+}
+.menu__subheading {
+  font-family: "Caveat", cursive;
+  color: #d8d9da;
+  font-size: 2rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #fda769;
+}
+.menu__list {
+  margin-top: 5rem;
+}
+.menu__item:not(:last-child) {
+  margin-bottom: 5rem;
+}
+
+.pageproduct {
+  display: flex;
+}
+.pageproduct__image {
+  flex: 1;
+}
+.pageproduct__image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.pageproduct__information {
+  flex: 1;
+  margin-top: 5rem;
+  padding-left: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.pageproduct__name {
+  font-family: "Caveat", cursive;
+  font-size: 5rem;
+  letter-spacing: 2px;
+  font-weight: 500;
+}
+.pageproduct__price {
+  font-size: 3rem;
+}
+.pageproduct__description {
+  font-family: "Open Sans", sans-serif;
+  letter-spacing: 2px;
+  line-height: 2;
+}
+.pageproduct__button {
+  font-size: 3rem;
+  padding: 1.5rem 3rem;
+  background-color: orange;
+  font-family: "Caveat", cursive;
+}
+
+.login__button {
+  padding: 1rem 2rem;
+  font-size: 2rem;
+}/*# sourceMappingURL=main.css.map */
