@@ -36,16 +36,27 @@ router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
 });
 
 //login local
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    failureRedirect: '/',
-  }),
-  function (req, res, next) {
-    //if successfully login
-    res.status(200).json({ status: true, message: 'Successfully logged in!' });
-  }
-);
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      // Authentication failed
+      //info is the third parameter in the done callback from passportjs
+      return res.status(401).json({ success: false, message: info });
+    }
+
+    // seraliza the user
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).json({ success: true, navigateLink: '/' });
+    });
+  })(req, res, next);
+});
 
 //Triggers google request consuming the first parameter provided in the google strategy.
 router.get(

@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const flash = require('connect-flash');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -35,6 +36,8 @@ app.use(
   })
 );
 
+app.use(flash());
+
 //initializing passport
 app.use(passport.initialize());
 //using passport to deal with the sessions
@@ -44,10 +47,6 @@ app.use(passport.session());
 require('./passport').auth(passport);
 
 app.use('/api/user', User);
-
-app.get('/check', function (req, res) {
-  res.redirect('/');
-});
 
 app.use(express.static(__dirname + '/client/build'));
 //except for api requests all other requests will be listened by client

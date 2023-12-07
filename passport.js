@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 const USER = require('./models/user');
 require('dotenv').config();
@@ -13,14 +14,14 @@ exports.auth = function (passport) {
         try {
           const foundUser = await USER.findOne({ email: email }); //find user using email
 
-          if (!foundUser)
-            return done(null, false, { message: "Email doesn't exist" });
+          if (!foundUser) {
+            return done(null, false, "Email Doesn't Exist");
+          }
           bcrypt.compare(password, foundUser.password, function (err, result) {
             //when found, encrypt the received password and match the two.
             if (err) return done(err);
             if (!result) {
-              console.log('was i here?', foundUser);
-              return done(null, false, { message: "Password doesn't match" });
+              return done(null, false, "Password doesn't match");
             }
 
             return done(null, foundUser); //if matched then send user to be serialized.
