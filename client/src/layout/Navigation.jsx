@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { logoutThunk } from '../redux/userSlice';
 
 export default function Navigation() {
   const location = useLocation();
   const currentPath = location.pathname.split('/')[1] || '/';
+  const USER = useSelector((state) => state.User);
+  const dispatch = useDispatch();
 
   function Link({ path, children }) {
     return (
@@ -16,13 +19,12 @@ export default function Navigation() {
       </a>
     );
   }
-
   async function handleLogout(e) {
     e.preventDefault();
-    const response = await axios.get('/api/user/logout/');
-    console.log(response);
+    dispatch(logoutThunk());
   }
 
+  useEffect(() => {}, [USER.isLoggedIn]);
   return (
     <nav className='nav'>
       <h1 className='nav__title'>Tikvahs</h1>
@@ -33,11 +35,13 @@ export default function Navigation() {
         <li className='nav__item'>
           <Link path={'contact'}>Contact</Link>
         </li>
-        <li className='nav__item'>
-          <a onClick={handleLogout} href='/api/user/logout'>
-            Logout
-          </a>
-        </li>
+        {USER?.isLoggedIn && (
+          <li className='nav__item'>
+            <a onClick={handleLogout} href='/api/user/logout'>
+              Logout
+            </a>
+          </li>
+        )}
       </ul>
     </nav>
   );

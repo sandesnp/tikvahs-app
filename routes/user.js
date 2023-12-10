@@ -5,6 +5,12 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { checkAuthenticated } = require('./auth-middleware');
 
+// Route to check authentication status
+router.get('/status', checkAuthenticated, (req, res) => {
+  // Return information about the authenticated user
+  res.status(200).json({ success: true, message: req.user?.email });
+});
+
 router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
   console.log(req.user);
   //check first if the sent passwords match or not.
@@ -41,19 +47,17 @@ router.post('/login', (req, res, next) => {
     if (err) {
       return next(err);
     }
-
     if (!user) {
       // Authentication failed
       //info is the third parameter in the done callback from passportjs
       return res.status(401).json({ success: false, message: info });
     }
-
     // seraliza the user
     req.logIn(user, (err) => {
       if (err) {
         return next(err);
       }
-      return res.status(200).json({ success: true, navigateLink: '/' });
+      return res.status(200).json({ success: true, message: req.user?.email });
     });
   })(req, res, next);
 });
@@ -78,7 +82,7 @@ router.get(
   }
 );
 
-router.get('/logout', checkAuthenticated, function (req, res) {
+router.delete('/logout', checkAuthenticated, function (req, res) {
   req.logout((err) => {
     if (err) {
       res.status(500).json({ message: 'Internal Server Error' });
@@ -87,7 +91,7 @@ router.get('/logout', checkAuthenticated, function (req, res) {
     req.session.destroy((err) => {
       if (err) console.log(`Error Destroying session: ${err}`);
     });
-    res.redirect(process.env.CLIENT_LINK + '/');
+    res.status(200).json({ success: true, message: 'Logout successful' });
   });
 });
 module.exports = router;

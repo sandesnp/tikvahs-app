@@ -1,9 +1,10 @@
 function checkAuthenticated(req, res, next) {
+  console.log(req.user);
   if (req.isAuthenticated()) {
     //jumps to next middleware
     return next();
   }
-  return res.status(500).json({ error: 'You are not authorized yet.' });
+  return res.status(500).json({ message: 'You are not authorized yet.' });
 }
 
 function checkNotAuthenticated(req, res, next) {

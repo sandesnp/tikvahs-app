@@ -4,7 +4,6 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const passport = require('passport');
-const flash = require('connect-flash');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
@@ -35,8 +34,6 @@ app.use(
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
-
-app.use(flash());
 
 //initializing passport
 app.use(passport.initialize());

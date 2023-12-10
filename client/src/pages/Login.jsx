@@ -1,35 +1,30 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-
-import Axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, Navigate } from 'react-router-dom';
+import { loginUser } from '../redux/userSlice';
 
 export default function Login() {
+  const USER = useSelector((state) => state.User);
+
+  const dispatch = useDispatch();
   const [user, setUser] = useState({ email: '', password: '' });
-  const [notification, setNotification] = useState('');
-  const navigate = useNavigate();
+  const [notification, setNotification] = useState();
+
   const handleChange = (e) => {
     setUser((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      //Since i couldn't access the passportjs failure message, i did a workaround. I added status
-      //property in the response if the login is positive. So status will only exist if the login is made.
-      const response = await Axios.post('/api/user/login', user);
-
-      if (response.data.success) return navigate(response.data.navigateLink);
-    } catch (error) {
-      if (error.response.status === 401) {
-        setNotification(error.response.data.message);
-        return setTimeout(() => {
-          setNotification('');
-        }, 5000);
-      }
-      console.log(error);
-    }
+    dispatch(loginUser(user));
   };
 
+  const possibleErrors = ["Password doesn't match", "Email Doesn't Exist"];
+  useEffect(() => {
+    if (possibleErrors.includes(USER.error)) setNotification(USER.error);
+  }, [USER.error]);
+  if (USER.isLoggedIn) {
+    return <Navigate to='/' replace={true} />;
+  }
   return (
     <div>
       {notification}
