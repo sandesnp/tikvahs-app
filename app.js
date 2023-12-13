@@ -10,8 +10,10 @@ const MongoStore = require('connect-mongo')(session);
 
 require('dotenv').config();
 
-//Models
-const User = require('./routes/user');
+//routes
+const USER = require('./routes/user');
+const PRODUCT = require('./routes/product');
+const IMAGE = require('./routes/image');
 
 //settings
 app.use(express.json());
@@ -43,7 +45,10 @@ app.use(passport.session());
 //passport.js
 require('./passport').auth(passport);
 
-app.use('/api/user', User);
+//adding routes to middleware
+app.use('/api/user', USER);
+app.use('/api/product', PRODUCT);
+app.use('/api/image', IMAGE);
 
 app.use(express.static(__dirname + '/client/build'));
 //except for api requests all other requests will be listened by client
