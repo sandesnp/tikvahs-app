@@ -1,6 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 const USER = require('./models/user');
 require('dotenv').config();

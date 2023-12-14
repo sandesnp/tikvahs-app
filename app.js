@@ -7,7 +7,6 @@ const passport = require('passport');
 const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-
 require('dotenv').config();
 
 //routes
@@ -22,9 +21,15 @@ app.use(express.static(__dirname + '/public')); //thats two underscore
 app.options('*', cors());
 app.use(cors());
 
-mongoose.connect(`${process.env.MONGODB}`).then(
-  () => console.log('Successfully connected'),
-  (err) => console.log(err)
+mongoose.connect(
+  process.env.MONGODB,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  function () {
+    console.log(`Successfully connected to mongodb server`);
+  }
 );
 
 app.use(
@@ -59,6 +64,6 @@ app.get('*', function (req, res) {
 
 const PORT = process.env.PORT || 5006;
 
-app.listen(PORT, () => {
-  console.log(`Successfully started server on port ${PORT}`);
+app.listen(PORT, function () {
+  console.log(`App running on port 5001`);
 });
