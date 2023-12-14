@@ -33,7 +33,7 @@ function fileFilter(req, file, cb) {
 }
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
-router.post('/files', upload.single('image'), function (req, res) {
+router.post('/files/upload', upload.single('image'), function (req, res) {
   res.json(req.file);
 });
 
