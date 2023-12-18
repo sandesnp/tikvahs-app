@@ -26,6 +26,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   },
   function () {
     console.log(`Successfully connected to mongodb server`);
@@ -65,5 +66,5 @@ app.get('*', function (req, res) {
 const PORT = process.env.PORT || 5006;
 
 app.listen(PORT, function () {
-  console.log(`App running on port 5001`);
+  console.log(`App running on port ${PORT}`);
 });

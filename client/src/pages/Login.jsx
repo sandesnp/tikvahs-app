@@ -5,6 +5,7 @@ import { loginUser } from '../redux/userSlice';
 
 export default function Login() {
   const USER = useSelector((state) => state.User);
+  const currentHost = window.location.host;
 
   const dispatch = useDispatch();
   const [user, setUser] = useState({ email: '', password: '' });
@@ -55,10 +56,15 @@ export default function Login() {
       <div className='col-sm-4'>
         <div className='card'>
           <div className='card-body'>
-            <Link className='btn btn-block' to={'/api/user/auth/google'}>
+            <a
+              className='btn btn-block'
+              href={`${
+                currentHost === 'localhost:3000' ? '//localhost:5010' : ''
+              }/api/user/auth/google`}
+            >
               <i className='fab fa-google'></i>
               Sign In with Google
-            </Link>
+            </a>
           </div>
         </div>
       </div>

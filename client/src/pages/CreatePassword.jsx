@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createPassword } from '../redux/userSlice';
+import { Navigate } from 'react-router-dom';
 // import Notification from '../components/Notification';
 
 export default function CreatePassword() {
+  const USER = useSelector((state) => state.User);
+  const dispatch = useDispatch();
   const [passwords, setPasswords] = useState({ password: '', repassword: '' });
   const [notifcation, setNotification] = useState('');
   const handleChange = (e) => {
@@ -11,17 +15,18 @@ export default function CreatePassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/api/user/createpassword/', passwords);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    dispatch(createPassword(passwords));
   };
-
+  useEffect(() => {
+    if (USER.error) setNotification(USER.error);
+  }, [USER.error]);
+  if (USER.isLoggedIn) {
+    return <Navigate to='/' replace={true} />;
+  }
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <div>{notifcation}</div>
         <input
           type='password'
           name='password'
@@ -38,7 +43,7 @@ export default function CreatePassword() {
           onChange={handleChange}
         />
         <label htmlFor='repassword'>Confirm Password</label>
-        {notifcation}
+
         <button>Create Password</button>
       </form>
     </div>

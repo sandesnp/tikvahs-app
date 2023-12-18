@@ -1,16 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.ff17ff42.css",
-    "main.js": "/static/js/main.4ebe8c0b.js",
-    "static/media/banana-cake.jpeg": "/static/media/banana-cake.168899ebd59b07c317c7.jpeg",
-    "static/media/assortment-pieces-cake.jpg": "/static/media/assortment-pieces-cake.a4897d7fb6c983a75a23.jpg",
+    "main.js": "/static/js/main.4edb7d76.js",
     "static/media/front-view-sweet-chocolate-cake.jpg": "/static/media/front-view-sweet-chocolate-cake.46fdd4f9b22548e84447.jpg",
     "index.html": "/index.html",
     "main.ff17ff42.css.map": "/static/css/main.ff17ff42.css.map",
-    "main.4ebe8c0b.js.map": "/static/js/main.4ebe8c0b.js.map"
+    "main.4edb7d76.js.map": "/static/js/main.4edb7d76.js.map"
   },
   "entrypoints": [
     "static/css/main.ff17ff42.css",
-    "static/js/main.4ebe8c0b.js"
+    "static/js/main.4edb7d76.js"
   ]
 }

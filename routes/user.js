@@ -8,15 +8,17 @@ const { checkAuthenticated } = require('./auth-middleware');
 // Route to check authentication status
 router.get('/status', checkAuthenticated, (req, res) => {
   // Return information about the authenticated user
-  res.status(200).json({ success: true, message: req.user?.email });
+  res.status(200).json({
+    success: true,
+    message: req.user?.email,
+    passwordExist: req.user.password ? true : false,
+  });
 });
 
 router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
-  console.log(req.user);
   //check first if the sent passwords match or not.
   if (req.body.password !== req.body.repassword)
     return res.status(400).json({
-      error: 'PasswordMismatch',
       message: 'The new password and confirmation password do not match.',
     });
 
@@ -27,12 +29,13 @@ router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
       const body = { email: req.user.email, password: hash };
 
       //put the password inside already created user.
-      USER.findByIdAndUpdate({ _id: req.user._id }, body, { new: true }).then(
-        (response) => {
-          console.log('Created Password', response);
-          return res.status(200).json({ message: 'Password was created' });
-        }
-      );
+      await USER.findByIdAndUpdate({ _id: req.user._id }, body, {
+        new: true,
+      }).then((response) => {
+        return res
+          .status(200)
+          .json({ user: response, message: 'Password was created' });
+      });
     } catch (error) {
       // Handle errors during the update operation
       console.error('Error during update:', error);
@@ -65,6 +68,9 @@ router.post('/login', (req, res, next) => {
 //Triggers google request consuming the first parameter provided in the google strategy.
 router.get(
   '/auth/google',
+  (req, res, next) => {
+    next();
+  },
   passport.authenticate('google', { scope: ['email', 'profile'] }) //scope declaration as scpecified in google api
 );
 
@@ -94,4 +100,31 @@ router.delete('/logout', checkAuthenticated, function (req, res) {
     res.status(200).json({ success: true, message: 'Logout successful' });
   });
 });
+router.get('/all', async function (req, res) {
+  try {
+    const response = await USER.find({});
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.delete('/delete/all', async function (req, res, next) {
+  try {
+    const response = await USER.deleteMany({});
+    res.json(response);
+  } catch (err) {
+    console.log(err);
+  }
+});
+router.delete('/delete/:id', async function (req, res, next) {
+  const id = req.params.id;
+  try {
+    const response = await USER.findByIdAndDelete(id);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;

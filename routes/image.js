@@ -88,7 +88,7 @@ router.get('/files/:filename', function (req, res) {
 });
 
 //showing single image
-router.get('/image/:filename', function (req, res) {
+router.get('/:filename', function (req, res) {
   gfs.files.findOne({ filename: req.params.filename }, function (err, file) {
     if (err) {
       return res.status(404).json({

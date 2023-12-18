@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchLoggedUser = createAsyncThunk(
-  'user/fetchLoggedUser',
+export const checkUserCookie = createAsyncThunk(
+  'user/checkUserCookie',
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get('/api/user/status');
@@ -41,6 +41,20 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const createPassword = createAsyncThunk(
+  'user/createPassword',
+  async (passwords, { rejectWithValue }) => {
+    try {
+      console.log(passwords);
+      const response = await axios.post('/api/user/createpassword/', passwords);
+      return response.data;
+    } catch (error) {
+      //res.status(400).json({ message: 'The new password and confirmation password do not match.'});
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
 export const logoutThunk = createAsyncThunk(
   'user/logout',
   async (_, { rejectWithValue }) => {
@@ -72,16 +86,16 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     //async request to check the login status through existing cookies
-    builder.addCase(fetchLoggedUser.pending, (state) => {
+    builder.addCase(checkUserCookie.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(fetchLoggedUser.fulfilled, (state, action) => {
+    builder.addCase(checkUserCookie.fulfilled, (state, action) => {
       state.loading = false;
       state.error = '';
       state.data = action.payload;
-      state.isLoggedIn = true;
+      state.isLoggedIn = action.payload.passwordExist;
     });
-    builder.addCase(fetchLoggedUser.rejected, (state, action) => {
+    builder.addCase(checkUserCookie.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
@@ -98,7 +112,21 @@ const userSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
-      console.log('checl', action);
+      state.error = action.payload;
+    });
+
+    //async request for creating password on user creation
+    builder.addCase(createPassword.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(createPassword.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data = action.payload;
+      state.isLoggedIn = true;
+      state.error = '';
+    });
+    builder.addCase(createPassword.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.payload;
     });
 
