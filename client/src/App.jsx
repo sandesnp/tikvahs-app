@@ -10,6 +10,7 @@ import CreatePassword from './pages/CreatePassword';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkUserCookie } from './redux/userSlice';
 import ProductForm from './pages/ProductForm';
+import Cart from './pages/Cart';
 
 export default function App() {
   const USER = useSelector((state) => state.User);
@@ -30,6 +31,7 @@ export default function App() {
           <Route path='/user/login' Component={Login} />
           <Route path='/user/createpassword' Component={CreatePassword} />
           <Route path='/menu/upload' Component={ProductForm} />
+          <Route path='/cart' Component={Cart} />
         </Routes>
         <Footer />
       </BrowserRouter>

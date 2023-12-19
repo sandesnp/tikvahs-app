@@ -32,13 +32,22 @@ export default function PageProduct() {
         <p className='pageproduct__price'>{product.price}</p>
         <p className='pageproduct__description'>{product.description}</p>
         <label htmlFor='quantity'>Quantity:</label>
-        <input
-          type='number'
-          id='quantity'
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          min='1'
-        />
+
+        <div className='quantity-input'>
+          <button
+            className='decrement'
+            onClick={() => setQuantity((prev) => prev && prev - 1)}
+          >
+            -
+          </button>
+          <input type='number' value={quantity} />
+          <button
+            className='increment'
+            onClick={() => setQuantity((prev) => prev + 1)}
+          >
+            +
+          </button>
+        </div>
         <button
           className='button button__anim--white pageproduct__button'
           onClick={handleAddToCart}

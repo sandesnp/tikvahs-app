@@ -21,11 +21,45 @@ const cartSlice = createSlice({
         existingItem.quantity += newItem.quantity;
       }
 
-      state.totalAmount += Number(newItem.price);
+      state.totalAmount += Number(newItem.price * newItem.quantity);
     },
-    // Add other reducers as needed (e.g., removeItem, clearCart)
+    removeItem: (state, action) => {
+      const id = action.payload;
+      const existingItem = state.items.find((item) => item._id === id);
+
+      if (existingItem) {
+        state.totalQuantity -= existingItem.quantity;
+        state.totalAmount -= existingItem.price * existingItem.quantity;
+        state.items = state.items.filter((item) => item._id !== id);
+      }
+    },
+    updateQuantity: (state, action) => {
+      console.log(action.payload);
+      const { id, operation } = action.payload;
+      const existingItem = state.items.find((item) => item._id === id);
+
+      if (existingItem) {
+        let quantityChange = 1;
+
+        if (operation === 'decrement') {
+          quantityChange = -1;
+        }
+
+        existingItem.quantity += quantityChange;
+
+        // Update the total quantity of items in the cart
+        state.totalQuantity += quantityChange;
+        // Update the total amount of the cart
+        state.totalAmount += existingItem.price * quantityChange;
+        state.totalAmount = Math.round(state.totalAmount * 100) / 100;
+        // When the quantity is zero, remove the item from the cart
+        if (existingItem.quantity === 0) {
+          state.items = state.items.filter((item) => item._id !== id);
+        }
+      }
+    },
   },
 });
 
-export const { addItem } = cartSlice.actions;
+export const { addItem, removeItem, updateQuantity } = cartSlice.actions;
 export default cartSlice.reducer;

@@ -40,3 +40,42 @@
     font-family: $font-title-B;
   }
 }
+
+.quantity-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $color-orange; /* Blue background */
+  border-radius: 10px; /* Rounded corners */
+  width: 120px; /* Adjust as needed */
+}
+
+.quantity-input input {
+  width: 40px; /* Width of the number input */
+  border: none; /* Remove border */
+  text-align: center; /* Center the text */
+  font-size: 16px; /* Large font size */
+  color: white; /* White text color */
+  background: none; /* Transparent background */
+}
+
+.quantity-input button {
+  background: none; /* Transparent background */
+  border: none; /* Remove border */
+  color: white; /* White text color */
+  font-size: 20px; /* Large font size */
+  padding: 10px; /* Padding around the buttons */
+  cursor: pointer; /* Cursor indicates button */
+  user-select: none; /* Prevent text selection */
+}
+
+/* Remove the spinner from the input type number */
+.quantity-input input::-webkit-outer-spin-button,
+.quantity-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input input[type='number'] {
+  -moz-appearance: textfield; /* Firefox */
+}
