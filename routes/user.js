@@ -10,37 +10,9 @@ router.get('/status', checkAuthenticated, (req, res) => {
   // Return information about the authenticated user
   res.status(200).json({
     success: true,
+    _id: req.user._id,
     message: req.user?.email,
     passwordExist: req.user.password ? true : false,
-  });
-});
-
-router.post('/createpassword', checkAuthenticated, async (req, res, next) => {
-  //check first if the sent passwords match or not.
-  if (req.body.password !== req.body.repassword)
-    return res.status(400).json({
-      message: 'The new password and confirmation password do not match.',
-    });
-
-  //hash the password
-  bcrypt.hash(req.body.password, 10, async function (err, hash) {
-    if (err) throw new Error('Could not encrypt password!');
-    try {
-      const body = { email: req.user.email, password: hash };
-
-      //put the password inside already created user.
-      await USER.findByIdAndUpdate({ _id: req.user._id }, body, {
-        new: true,
-      }).then((response) => {
-        return res
-          .status(200)
-          .json({ user: response, message: 'Password was created' });
-      });
-    } catch (error) {
-      // Handle errors during the update operation
-      console.error('Error during update:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
   });
 });
 
@@ -88,6 +60,25 @@ router.get(
   }
 );
 
+router
+  .route('/')
+  .get(async function (req, res) {
+    try {
+      const response = await USER.find({});
+      res.json(response);
+    } catch (error) {
+      console.log(error);
+    }
+  })
+  .delete(async function (req, res, next) {
+    try {
+      const response = await USER.deleteMany({});
+      res.json(response);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
 router.delete('/logout', checkAuthenticated, function (req, res) {
   req.logout((err) => {
     if (err) {
@@ -100,31 +91,61 @@ router.delete('/logout', checkAuthenticated, function (req, res) {
     res.status(200).json({ success: true, message: 'Logout successful' });
   });
 });
-router.get('/all', async function (req, res) {
-  try {
-    const response = await USER.find({});
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-});
 
-router.delete('/delete/all', async function (req, res, next) {
-  try {
-    const response = await USER.deleteMany({});
-    res.json(response);
-  } catch (err) {
-    console.log(err);
-  }
-});
-router.delete('/delete/:id', async function (req, res, next) {
-  const id = req.params.id;
-  try {
-    const response = await USER.findByIdAndDelete(id);
-    res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-});
+router
+  .route('/:id')
+  .get(async (req, res) => {
+    try {
+      const user = await USER.findById(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  })
+  .put(async (req, res) => {
+    try {
+      const updatedUser = await USER.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      res.json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  })
+  .patch(async (req, res) => {
+    console.log(1, req.params.id);
+    const newUpdates = { ...req.body };
+    if (req.body?.password) {
+      try {
+        newUpdates.password = await bcrypt.hash(req.body.password, 10);
+      } catch (err) {
+        throw new Error('Could not encrypt password!');
+      }
+    }
+    try {
+      const updatedUser = await USER.findByIdAndUpdate(
+        req.params.id,
+        { $set: newUpdates },
+        { new: true }
+      );
+      res.json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  })
+  .delete(async function (req, res, next) {
+    const id = req.params.id;
+    try {
+      const response = await USER.findByIdAndDelete(id);
+      res.json(response);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
 module.exports = router;

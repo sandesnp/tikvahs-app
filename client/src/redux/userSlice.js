@@ -43,10 +43,10 @@ export const loginUser = createAsyncThunk(
 
 export const createPassword = createAsyncThunk(
   'user/createPassword',
-  async (passwords, { rejectWithValue }) => {
+  async (passwords, { getState, rejectWithValue }) => {
     try {
-      console.log(passwords);
-      const response = await axios.post('/api/user/createpassword/', passwords);
+      const ID = getState().User.data._id;
+      const response = await axios.patch(`/api/user/${ID}`, passwords);
       return response.data;
     } catch (error) {
       //res.status(400).json({ message: 'The new password and confirmation password do not match.'});

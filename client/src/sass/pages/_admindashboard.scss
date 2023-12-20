@@ -1,0 +1,61 @@
+.dashboard-container {
+  display: flex;
+  height: 90vh;
+}
+
+.sidebar {
+  background-color: $sidebar-bg;
+  color: $sidebar-text;
+  width: 25rem;
+  padding: 2rem;
+
+  nav ul {
+    list-style: none;
+    padding: 0;
+
+    li a {
+      color: $sidebar-text;
+      text-decoration: none;
+      display: block;
+      padding: 1rem 0;
+    }
+  }
+}
+
+.main-content {
+  flex-grow: 1;
+  background-color: $main-bg;
+  padding: 2rem;
+
+  .server-status,
+  .server-details,
+  .server-statistics {
+    background-color: $main-content-bg;
+    margin-bottom: 2rem;
+    padding: 2rem;
+    border-radius: 0.4rem;
+  }
+
+  .server {
+    background-color: $sidebar-text;
+    color: $sidebar-bg;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.4rem;
+  }
+}
+
+// Responsive tweaks
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .main-content {
+    width: 100%;
+  }
+}
