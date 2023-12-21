@@ -20,7 +20,7 @@ exports.auth = function (passport) {
             //when found, encrypt the received password and match the two.
             if (err) return done(err);
             if (!result) {
-              return done(null, false, "Password doesn't match");
+              return done(null, false, 'Password is wrong');
             }
 
             return done(null, foundUser); //if matched then send user to be serialized.

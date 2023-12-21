@@ -11,7 +11,7 @@ router.get('/status', checkAuthenticated, (req, res) => {
   res.status(200).json({
     success: true,
     _id: req.user._id,
-    message: req.user?.email,
+    email: req.user?.email,
     passwordExist: req.user.password ? true : false,
   });
 });
@@ -118,33 +118,150 @@ router
     }
   })
   .patch(async (req, res) => {
-    console.log(1, req.params.id);
-    const newUpdates = { ...req.body };
-    if (req.body?.password) {
-      try {
-        newUpdates.password = await bcrypt.hash(req.body.password, 10);
-      } catch (err) {
-        throw new Error('Could not encrypt password!');
-      }
-    }
     try {
-      const updatedUser = await USER.findByIdAndUpdate(
-        req.params.id,
-        { $set: newUpdates },
-        { new: true }
-      );
-      res.json(updatedUser);
+      const targetUser = await USER.findById(req.params.id);
+      const requestingUser = req.user; // User making the request
+
+      if (!targetUser) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+
+      // Logic for a super user
+      if (requestingUser.userType === 'super') {
+        if (targetUser._id.equals(requestingUser._id)) {
+          // Super user can only change their own password
+          if (req.body?.password) {
+            const passwordHash = await bcrypt.hash(req.body.password, 10);
+            await USER.findByIdAndUpdate(
+              targetUser._id,
+              { $set: { password: passwordHash } },
+              { new: true }
+            );
+            return res
+              .status(200)
+              .json({ message: 'Password updated successfully' });
+          }
+          return res
+            .status(403)
+            .json({ message: 'You can only update your password' });
+        } else {
+          // Super user can update other users except for userType
+          if (req.body?.userType && req.body.userType === 'super') {
+            return res
+              .status(403)
+              .json({ message: 'Cannot assign super userType' });
+          }
+          const updates = { ...req.body };
+          if (req.body?.password) {
+            updates.password = await bcrypt.hash(req.body.password, 10);
+          }
+          const updatedUser = await USER.findByIdAndUpdate(
+            req.params.id,
+            { $set: updates },
+            { new: true }
+          );
+          return res.json(updatedUser);
+        }
+      }
+
+      // Logic for an admin user
+      if (requestingUser.userType === 'admin') {
+        if (
+          targetUser._id.equals(requestingUser._id) ||
+          ['normal', 'delivery'].includes(targetUser.userType)
+        ) {
+          // Admin updating themselves or normal/delivery users
+          if (req.body.userType && req.body.userType !== targetUser.userType) {
+            return res.status(403).json({ message: 'Cannot change userType' });
+          }
+          const updates = { ...req.body };
+          if (req.body?.password) {
+            updates.password = await bcrypt.hash(req.body.password, 10);
+          }
+          const updatedUser = await USER.findByIdAndUpdate(
+            req.params.id,
+            { $set: updates },
+            { new: true }
+          );
+          return res.json(updatedUser);
+        } else {
+          return res.status(403).json({
+            message:
+              'Admin can only update their own or normal and delivery user types',
+          });
+        }
+      }
+
+      // Logic for normal and delivery users (self-update only)
+      if (
+        (requestingUser.userType === 'normal' ||
+          requestingUser.userType === 'delivery') &&
+        targetUser._id.equals(requestingUser._id)
+      ) {
+        // Allow updates on own profile
+        const updates = { ...req.body };
+        if (req.body?.password) {
+          updates.password = await bcrypt.hash(req.body.password, 10);
+        }
+        const updatedUser = await USER.findByIdAndUpdate(
+          req.params.id,
+          { $set: updates },
+          { new: true }
+        );
+
+        return res.json(updatedUser);
+      }
+
+      return res.status(403).json({ message: 'Unauthorized' });
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   })
-  .delete(async function (req, res, next) {
-    const id = req.params.id;
+  .delete(async (req, res, next) => {
+    const targetUserId = req.params.id;
+    const requestingUser = req.user; // User making the request
+
     try {
-      const response = await USER.findByIdAndDelete(id);
-      res.json(response);
+      if (requestingUser.userType === 'super') {
+        if (targetUserId === requestingUser._id.toString()) {
+          return res
+            .status(403)
+            .json({ message: 'Super user cannot delete themselves' });
+        }
+        await USER.findByIdAndDelete(targetUserId);
+        return res.status(200).json({ message: 'User deleted successfully' });
+      }
+
+      if (requestingUser.userType === 'admin') {
+        const targetUser = await USER.findById(targetUserId);
+        if (!targetUser) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        if (['normal', 'delivery'].includes(targetUser.userType)) {
+          await USER.findByIdAndDelete(targetUserId);
+          return res.status(200).json({ message: 'User deleted successfully' });
+        } else {
+          return res.status(403).json({
+            message: 'Admin can only delete normal and delivery user types',
+          });
+        }
+      }
+
+      // Logic for normal and delivery users (self-delete only)
+      if (
+        (requestingUser.userType === 'normal' ||
+          requestingUser.userType === 'delivery') &&
+        targetUserId === requestingUser._id.toString()
+      ) {
+        await USER.findByIdAndDelete(targetUserId);
+        return res.status(200).json({ message: 'User deleted successfully' });
+      }
+
+      return res.status(403).json({ message: 'Unauthorized' });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
     }
   });
 

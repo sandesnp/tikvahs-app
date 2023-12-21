@@ -41,12 +41,12 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const createPassword = createAsyncThunk(
+export const updateUser = createAsyncThunk(
   'user/createPassword',
-  async (passwords, { getState, rejectWithValue }) => {
+  async (user, { getState, rejectWithValue }) => {
     try {
       const ID = getState().User.data._id;
-      const response = await axios.patch(`/api/user/${ID}`, passwords);
+      const response = await axios.patch(`/api/user/${ID}`, user);
       return response.data;
     } catch (error) {
       //res.status(400).json({ message: 'The new password and confirmation password do not match.'});
@@ -90,6 +90,7 @@ const userSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(checkUserCookie.fulfilled, (state, action) => {
+      console.log(action.payload);
       state.loading = false;
       state.error = '';
       state.data = action.payload;
@@ -116,16 +117,16 @@ const userSlice = createSlice({
     });
 
     //async request for creating password on user creation
-    builder.addCase(createPassword.pending, (state) => {
+    builder.addCase(updateUser.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(createPassword.fulfilled, (state, action) => {
+    builder.addCase(updateUser.fulfilled, (state, action) => {
       state.loading = false;
       state.data = action.payload;
       state.isLoggedIn = true;
       state.error = '';
     });
-    builder.addCase(createPassword.rejected, (state, action) => {
+    builder.addCase(updateUser.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createPassword } from '../redux/userSlice';
+import { updateUser } from '../redux/userSlice';
 import { Navigate } from 'react-router-dom';
 
 const Notification = ({ message }) => {
@@ -35,7 +35,7 @@ export default function CreatePassword() {
       setNotification("The passwords don't match.");
       return;
     }
-    dispatch(createPassword(passwords));
+    dispatch(updateUser({ password: passwords.password }));
   };
 
   if (USER.isLoggedIn) {

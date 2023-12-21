@@ -10,6 +10,7 @@ import {
   Label,
   Input,
 } from 'reactstrap';
+
 import axios from 'axios';
 
 export default function User() {
@@ -19,6 +20,7 @@ export default function User() {
     email: '',
     password: '',
     id: '',
+    userType: 'normal',
   });
 
   useEffect(() => {
@@ -41,7 +43,9 @@ export default function User() {
       const response = await axios.patch(`/api/user/${currentUser._id}`, {
         email: currentUser.email,
         password: currentUser.password,
+        userType: currentUser.userType,
       });
+
       setUsers(
         users.map((user) =>
           user._id === currentUser._id
@@ -51,7 +55,7 @@ export default function User() {
       );
       toggleModal();
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Error updating user:', error.response.data);
     }
   };
 
@@ -118,6 +122,20 @@ export default function User() {
               value={currentUser.password}
               onChange={handleInputChange}
             />
+          </FormGroup>
+          <FormGroup>
+            <Label for='userType'>User Type</Label>
+            <Input
+              type='select'
+              name='userType'
+              id='userType'
+              value={currentUser.userType}
+              onChange={handleInputChange}
+            >
+              <option value='normal'>Normal</option>
+              <option value='admin'>Admin</option>
+              <option value='delivery'>Delivery</option>
+            </Input>
           </FormGroup>
         </ModalBody>
         <ModalFooter>

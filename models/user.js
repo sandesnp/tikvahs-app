@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
       secretCode: { type: String },
     },
   ],
+  userType: { type: String, default: 'normal' },
 });
 
 module.exports = mongoose.model('User', userSchema);

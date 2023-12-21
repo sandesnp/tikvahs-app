@@ -13,6 +13,7 @@ require('dotenv').config();
 const USER = require('./routes/user');
 const PRODUCT = require('./routes/product');
 const IMAGE = require('./routes/image');
+const ADMIN = require('./routes/admin');
 
 //settings
 app.use(express.json());
@@ -55,6 +56,7 @@ require('./passport').auth(passport);
 app.use('/api/user', USER);
 app.use('/api/product', PRODUCT);
 app.use('/api/image', IMAGE);
+app.use('/admin', ADMIN);
 
 app.use(express.static(__dirname + '/client/build'));
 //except for api requests all other requests will be listened by client
