@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from '../redux/cartSlice';
+import { removeItem, updateQuantity, checkoutCart } from '../redux/cartSlice';
 
 export default function Cart() {
   const Cart = useSelector((state) => state.Cart);
@@ -11,6 +11,19 @@ export default function Cart() {
   };
   const handleUpdate = (id, operation) => {
     dispatch(updateQuantity({ id, operation }));
+  };
+
+  const handleCheckout = () => {
+    dispatch(checkoutCart())
+      .then((action) => {
+        if (action) {
+          const url = action.payload;
+          window.location.href = url; // Redirect to Stripe checkout
+        }
+      })
+      .catch((error) => {
+        console.error('Checkout failed:', error);
+      });
   };
   return (
     <div className='cart-container'>
@@ -67,7 +80,9 @@ export default function Cart() {
       <div className='cart-total'>
         <h3>Total: {totalAmount} USD</h3>
       </div>
-      <button className='checkout-button'>Checkout</button>
+      <button className='checkout-button' onClick={handleCheckout}>
+        Checkout
+      </button>
     </div>
   );
 }

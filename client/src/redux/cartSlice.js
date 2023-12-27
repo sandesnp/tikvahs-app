@@ -1,5 +1,29 @@
 // cartSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+export const checkoutCart = createAsyncThunk(
+  'cart/checkout',
+  async (_, { getState, dispatch }) => {
+    const state = getState();
+    const items = state.Cart.items.map((item) => ({
+      id: item._id,
+      quantity: item.quantity,
+    }));
+    try {
+      const response = await axios.post('/api/order/create-checkout-session', {
+        items,
+      });
+      if (response.data.success) {
+        dispatch(clearCart()); // Clear the cart if checkout is successful
+      }
+      return response.data.url;
+    } catch (error) {
+      console.error('Checkout error:', error);
+      throw error;
+    }
+  }
+);
 
 const initialState = {
   items: [], // Array of products in the cart
@@ -11,6 +35,11 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    clearCart: (state) => {
+      state.items = [];
+      state.totalQuantity = 0;
+      state.totalAmount = 0;
+    },
     addItem: (state, action) => {
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item._id === newItem._id);
@@ -61,5 +90,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, updateQuantity } = cartSlice.actions;
+export const { addItem, removeItem, updateQuantity, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;

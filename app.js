@@ -14,6 +14,7 @@ const USER = require('./routes/user');
 const PRODUCT = require('./routes/product');
 const IMAGE = require('./routes/image');
 const ADMIN = require('./routes/admin');
+const ORDER = require('./routes/order');
 
 //settings
 app.use(express.json());
@@ -56,6 +57,7 @@ require('./passport').auth(passport);
 app.use('/api/user', USER);
 app.use('/api/product', PRODUCT);
 app.use('/api/image', IMAGE);
+app.use('/api/order', ORDER);
 app.use('/admin', ADMIN);
 
 app.use(express.static(__dirname + '/client/build'));
