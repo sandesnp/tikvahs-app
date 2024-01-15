@@ -1,0 +1,60 @@
+.header {
+  position: relative;
+  background-image: url('./images/front-view-sweet-chocolate-cake.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh; // Fullscreen height
+
+  .top-info {
+    color: white;
+    padding: 1rem 0;
+    .location-time,
+    .contact {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .navigation {
+    // Custom navbar styling if needed
+  }
+
+  .restaurant-name {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+
+    h1 {
+      font-size: 4rem;
+    }
+  }
+
+  .cta-button {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $color-gold; // Define $gold-color in your variables
+    color: $color-black; // Define $dark-color in your variables
+    border: none;
+    font-size: 1rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .header {
+    .restaurant-name {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .cta-button {
+      font-size: 0.8rem;
+    }
+  }
+}

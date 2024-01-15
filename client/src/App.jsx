@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
-import Navigation from './layout/Navigation';
-import Menu from './pages/Menu';
-import Footer from './layout/Footer';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import PageProduct from './pages/PageProduct';
-import Contact from './pages/Contact';
 import Login from './pages/Login';
 import CreatePassword from './pages/CreatePassword';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { checkUserCookie } from './redux/userSlice';
 import ProductForm from './pages/ProductForm';
 import Cart from './pages/Cart';
@@ -16,9 +12,14 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
 import ProductManagement from './pages/admin/ProductManagement';
 import UserProfile from './pages/UserProfie';
+import TabCardGrid from 'components/TabCardGrid';
+import Home from 'pages/Home';
+import Contact from 'components/forms/TwoColContactUsWithIllustrationFullForm';
+import Footer from 'components/footers/MiniCenteredFooter';
+import Header from './components/headers/light';
 
 export default function App() {
-  const USER = useSelector((state) => state.User);
+  // const USER = useSelector((state) => state.User);
 
   const dispatch = useDispatch();
 
@@ -28,15 +29,17 @@ export default function App() {
   return (
     <div className='app'>
       <BrowserRouter>
-        <Navigation />
+        <Header />
         <Routes>
-          <Route path='/menu' element={<Menu />} />
+          <Route path='/menu' element={<TabCardGrid />} />
           <Route path='/menu/:productId' element={<PageProduct />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/user/login' element={<Login />} />
           <Route path='/user/createpassword' element={<CreatePassword />} />
           <Route path='/menu/upload' element={<ProductForm />} />
           <Route path='/cart' element={<Cart />} />
+          <Route path='/' element={<Home />} />
+
           <Route path='/admin' element={<AdminView />}>
             {/* Make the admin/dashboard component the default */}
             <Route index element={<Navigate to='/admin/dashboard' replace />} />

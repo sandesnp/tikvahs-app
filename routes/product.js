@@ -5,6 +5,7 @@ const PRODUCT = require('../models/product');
 
 // GET all products
 router.get('/', async (req, res) => {
+  console.log('checking if workign');
   try {
     const products = await PRODUCT.find();
     res.json(products);

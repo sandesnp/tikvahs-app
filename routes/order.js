@@ -4,6 +4,7 @@ const PRODUCT = require('../models/product');
 const ORDER = require('../models/order');
 const queryString = require('querystring');
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+const { checkAuthenticated } = require('./auth-middleware');
 
 // POST - Create a new order
 route.post('/', async (req, res) => {
@@ -62,63 +63,70 @@ route.get('/success', async (req, res) => {
   }
 });
 
-route.post('/create-checkout-session', async (req, res, next) => {
-  // Assuming req.user is set by PassportJS after successful authentication
-  const user = req.user || { email: 'default_email@example.com' }; // Fallback for testing
+route.post(
+  '/create-checkout-session',
+  checkAuthenticated,
+  async (req, res, next) => {
+    // Assuming req.user is set by PassportJS after successful authentication
+    const user = req.user || { email: 'default_email@example.com' }; // Fallback for testing
 
-  const frontendItems = req.body.items; // Items sent from frontend
+    const frontendItems = req.body.items; // Items sent from frontend
 
-  try {
-    const itemLists = await Promise.all(
-      frontendItems.map(async (item) => {
-        const product = await PRODUCT.findById(item.id);
-        if (!product) {
-          throw new Error(`Product with ID ${item.id} not found`);
-        }
+    try {
+      const itemLists = await Promise.all(
+        frontendItems.map(async (item) => {
+          const product = await PRODUCT.findById(item.id);
+          if (!product) {
+            throw new Error(`Product with ID ${item.id} not found`);
+          }
 
-        // Convert price to cents if stored in a different format in MongoDB
-        const priceInCents = parseInt(product.price * 100);
+          // Convert price to cents if stored in a different format in MongoDB
+          const priceInCents = parseInt(product.price * 100);
 
-        return {
-          price_data: {
-            currency: 'aud', // Assuming all products use the same currency
-            product_data: {
-              name: product.name,
-              description: product.description,
+          return {
+            price_data: {
+              currency: 'aud', // Assuming all products use the same currency
+              product_data: {
+                name: product.name,
+                description: product.description,
+              },
+              unit_amount: priceInCents,
             },
-            unit_amount: priceInCents,
-          },
-          quantity: item.quantity,
-        };
-      })
-    );
+            quantity: item.quantity,
+          };
+        })
+      );
 
-    // Inside the Stripe checkout session creation logic
-    const queryData = queryString.stringify({
-      items: JSON.stringify(
-        frontendItems.map((item) => ({ id: item.id, quantity: item.quantity }))
-      ),
-    });
-    const successUrl = `${process.env.SERVER_LINK}/api/order/success?${queryData}`;
+      // Inside the Stripe checkout session creation logic
+      const queryData = queryString.stringify({
+        items: JSON.stringify(
+          frontendItems.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+          }))
+        ),
+      });
+      const successUrl = `${process.env.SERVER_LINK}/api/order/success?${queryData}`;
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      customer_email: user.email, // Email from authenticated user
-      line_items: itemLists,
-      shipping_address_collection: {
-        allowed_countries: ['AU'], // Modify as per your requirement
-      },
-      success_url: successUrl,
-      cancel_url: `${process.env.SERVER_LINK}/api/product/order/cancel`,
-    });
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        customer_email: user.email, // Email from authenticated user
+        line_items: itemLists,
+        shipping_address_collection: {
+          allowed_countries: ['AU'], // Modify as per your requirement
+        },
+        success_url: successUrl,
+        cancel_url: `${process.env.SERVER_LINK}/api/product/order/cancel`,
+      });
 
-    res.json({ success: true, url: session.url });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: 'Internal Server Error' });
+      res.json({ success: true, url: session.url });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Internal Server Error' });
+    }
   }
-});
+);
 
 // GET - Retrieve a single order by ID
 route.get('/:id', async (req, res) => {

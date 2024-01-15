@@ -13,40 +13,9 @@
   box-sizing: inherit;
 }
 
-@media only screen and (max-width: 125em) {
-  html {
-    font-size: 62.5%;
-  }
-}
-@media only screen and (max-width: 75em) {
-  html {
-    font-size: 61.5%;
-  }
-}
-@media only screen and (max-width: 56.25em) {
-  html {
-    font-size: 60%;
-  }
-}
-@media only screen and (max-width: 37.5em) {
-  html {
-    font-size: 58%;
-  }
-}
-@media only screen and (min-width: 125em) {
-  html {
-    font-size: 65%;
-  }
-}
-
 body {
   min-width: 380px;
   box-sizing: border-box;
-}
-
-body {
-  font-size: 1.6rem;
-  font-family: "Roboto Serif", serif;
 }
 
 .product {
@@ -316,10 +285,10 @@ body {
   }
 }
 
-.app {
-  margin: 10rem 10rem 0 10rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+.FiveColumnWithInputForm__LogoImg-sc-15nw9w3-17,
+.hoPdCh {
+  width: 15rem !important;
+  height: 10rem;
 }
 
 .menu {
