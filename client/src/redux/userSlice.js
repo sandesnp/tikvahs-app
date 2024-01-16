@@ -137,7 +137,7 @@ const userSlice = createSlice({
     });
     builder.addCase(logoutThunk.fulfilled, (state) => {
       document.cookie =
-        'connect.sid' + '=; expires=' + new Date(0).toUTCString() + '; path=/';
+        'connect.sid=; expires=' + new Date(0).toUTCString() + '; path=/';
       state.loading = false;
       state.isLoggedIn = false;
       state = initialState;

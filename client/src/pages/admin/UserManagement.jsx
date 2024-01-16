@@ -40,7 +40,7 @@ export default function User() {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.patch(`/api/user/${currentUser._id}`, {
+      await axios.patch(`/api/user/${currentUser._id}`, {
         email: currentUser.email,
         password: currentUser.password,
         userType: currentUser.userType,

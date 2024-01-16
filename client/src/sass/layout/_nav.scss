@@ -39,3 +39,8 @@
 .active {
   color: $color-orange !important;
 }
+
+.light__NavLink-sc-1dasr60-2,
+.iKrKeo {
+  @include darkenLink;
+}

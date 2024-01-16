@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 export default function AdminDashboard() {
+  const USER = useSelector((state) => state.User);
   const [responses, setResponses] = useState({ user: '', product: '' });
   useEffect(() => {
     requestData();
@@ -17,6 +20,10 @@ export default function AdminDashboard() {
       console.error(`Error fetching data: `, err);
     }
   };
+  if (!USER.isLoggedIn) {
+    return <Navigate to='/' replace={true} />;
+  }
+
   return (
     <>
       <div className='server-status'>

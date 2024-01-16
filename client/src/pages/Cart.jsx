@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { removeItem, updateQuantity, checkoutCart } from '../redux/cartSlice';
 
 export default function Cart() {
@@ -25,6 +26,9 @@ export default function Cart() {
         console.error('Checkout failed:', error);
       });
   };
+  if (Cart.totalQuantity < 1) {
+    return <Navigate to='/' replace={true} />;
+  }
   return (
     <div className='cart-container'>
       <div className='cart-header'>

@@ -4,13 +4,13 @@ import { Navigate } from 'react-router-dom';
 import { loginUser } from '../redux/userSlice';
 import AnimationRevealPage from 'helpers/AnimationRevealPage.js';
 import { Container as ContainerBase } from 'components/misc/Layouts';
+import { ReactComponent as LoginIcon } from 'feather-icons/dist/icons/log-in.svg';
 import tw from 'twin.macro';
 import styled from 'styled-components';
 import { css } from 'styled-components/macro'; //eslint-disable-line
 import illustration from 'images/login-illustration.svg';
 import logo from 'images/logo.svg';
 import googleIconImageSrc from 'images/google-icon.png';
-import { ReactComponent as LoginIcon } from 'feather-icons/dist/icons/log-in.svg';
 
 const Container = tw(
   ContainerBase
@@ -62,16 +62,13 @@ const Login = ({
   illustrationImageSrc = illustration,
   headingText = 'Sign In To Tikvahs',
   socialButtons,
-  submitButtonText = 'Sign In',
-  SubmitButtonIcon = LoginIcon,
-  forgotPasswordUrl = '#',
-  signupUrl = '#',
 }) => {
+  const SubmitButtonIcon = LoginIcon;
   const currentHost = window.location.host;
   const socialLinks = socialButtons || [
     {
       iconImageSrc: googleIconImageSrc,
-      text: 'Sign In With Google',
+      text: 'Log In With Google',
       url: `${
         currentHost === 'localhost:3000' ? '//localhost:5010' : ''
       }/api/user/auth/google`,
@@ -95,13 +92,21 @@ const Login = ({
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsClicked((prev) => !prev);
     dispatch(loginUser(user));
   };
 
-  // Effect for error handling
-  const possibleErrors = ["Password doesn't match", "Email Doesn't Exist"];
+  const [isClicked, setIsClicked] = useState(false);
+
   useEffect(() => {
+    // Effect for error handling
+    const possibleErrors = [
+      "Password doesn't match",
+      "Email Doesn't Exist",
+      'Password is wrong',
+    ];
     if (possibleErrors.includes(USER.error)) {
+      console.log('error', USER.error);
       setNotification(USER.error);
       const timer = setTimeout(() => {
         setNotification('Or Sign in with your e-mail'); // or set to your default value
@@ -110,7 +115,7 @@ const Login = ({
       // Clear timeout if the component unmounts
       return () => clearTimeout(timer);
     }
-  }, [USER.error]);
+  }, [USER.error, isClicked]);
 
   // Redirect if logged in
   if (USER.isLoggedIn) {
@@ -160,7 +165,8 @@ const Login = ({
                     onChange={handleChange}
                   />
                   <SubmitButton type='submit'>
-                    {/* Icon and text remain the same */}
+                    <SubmitButtonIcon className='icon' />
+                    <span className='text'>Log In</span>
                   </SubmitButton>
                 </Form>
               </FormContainer>

@@ -16,7 +16,7 @@ export default function PageProduct() {
     axios.get(`/api/product/${productId}`).then((response) => {
       setProduct(response.data);
     });
-  }, []);
+  }, [productId]);
   return (
     <div className='pageproduct'>
       <figure className='pageproduct__image'>

@@ -1,14 +1,7 @@
 import React from 'react';
-import { useNavigate, Outlet, Link } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
 export default function AdminView() {
-  const navigate = useNavigate();
-
-  const GotoLink = (e, link) => {
-    e.preventDefault();
-    navigate(link);
-  };
-
   return (
     <div className='dashboard-container'>
       <aside className='sidebar'>

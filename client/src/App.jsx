@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import PageProduct from './pages/PageProduct';
 import Login from './pages/Login';
-import CreatePassword from './pages/CreatePassword';
+import CreatePassword from './pages/CreatePasswrod';
 import { useDispatch } from 'react-redux';
 import { checkUserCookie } from './redux/userSlice';
 import ProductForm from './pages/ProductForm';
@@ -11,7 +11,7 @@ import AdminView from './pages/admin/AdminView';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UserManagement from './pages/admin/UserManagement';
 import ProductManagement from './pages/admin/ProductManagement';
-import UserProfile from './pages/UserProfie';
+import UserProfile from './pages/UserProfile';
 import TabCardGrid from 'components/TabCardGrid';
 import Home from 'pages/Home';
 import Contact from 'components/forms/TwoColContactUsWithIllustrationFullForm';
@@ -25,7 +25,8 @@ export default function App() {
 
   useEffect(() => {
     dispatch(checkUserCookie()); //state
-  }, []);
+  }, [dispatch]);
+
   return (
     <div className='app'>
       <BrowserRouter>

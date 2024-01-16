@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { checkAuthenticated } = require('./auth-middleware');
+const nodemailer = require('nodemailer');
 
 // Route to check authentication status
 router.get('/status', checkAuthenticated, (req, res) => {
@@ -264,5 +265,37 @@ router
       res.status(500).json({ message: 'Internal Server Error' });
     }
   });
+
+router.post('/sendmail', async (req, res, next) => {
+  try {
+    const { email, subject, message } = req.body;
+
+    // Validate and sanitize input here
+
+    let transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      requireTLS: true,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.GMAIL_EMAIL, // Gmail email
+        pass: process.env.GMAIL_APP_KEY, // Gmail App Password
+      },
+    });
+
+    // Send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: process.env.GMAIL_EMAIL, // Sender address
+      to: process.env.GMAIL_EMAIL, // List of receivers (your email)
+      subject: subject, // Subject line
+      html: `<p>Message from ${email}: ${message}</p>`, // HTML body
+    });
+
+    res.status(200).send({ message: 'Email sent successfully', info: info });
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(500).send({ message: 'Failed to send email', error: error });
+  }
+});
 
 module.exports = router;

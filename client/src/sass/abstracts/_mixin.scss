@@ -46,6 +46,13 @@
     color: $color-black;
   }
 }
+@mixin whitenLink {
+  &:link,
+  &:visited {
+    text-decoration: none;
+    color: $color-white;
+  }
+}
 
 @mixin clearfix {
   &::after {

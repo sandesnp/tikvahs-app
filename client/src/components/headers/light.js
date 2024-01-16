@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import tw from 'twin.macro';
 import styled from 'styled-components';
 import { css } from 'styled-components/macro'; //eslint-disable-line
+import { Link } from 'react-router-dom';
 
 import useAnimatedNavToggler from '../../helpers/useAnimatedNavToggler.js';
 
@@ -22,17 +23,12 @@ export const NavLinks = tw.div`inline-block`;
 /* hocus: stands for "on hover or focus"
  * hocus:bg-primary-700 will apply the bg-primary-700 class on hover or focus
  */
-export const NavLink = tw.a`
-  text-lg my-2 lg:text-sm lg:mx-6 lg:my-0
-  font-semibold tracking-wide transition duration-300
-  pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500
+export const NavLink = styled(Link)`
+  ${tw`text-lg my-2 lg:text-sm lg:mx-6 lg:my-0 font-semibold tracking-wide transition duration-300 pb-1 border-b-2 border-transparent hover:border-primary-500 hocus:text-primary-500`}
 `;
 
-export const PrimaryLink = tw(NavLink)`
-  lg:mx-0
-  px-8 py-3 rounded bg-primary-500 text-gray-100
-  hocus:bg-primary-700 hocus:text-gray-200 focus:shadow-outline
-  border-b-0
+export const PrimaryLink = styled(NavLink)`
+  ${tw`lg:mx-0 px-8 py-3 rounded bg-primary-500 text-gray-100 hocus:bg-primary-700 hocus:text-gray-200 focus:shadow-outline border-b-0`}
 `;
 
 export const LogoLink = styled(NavLink)`
@@ -42,7 +38,6 @@ export const LogoLink = styled(NavLink)`
     ${tw`w-10 mr-3`}
   }
 `;
-
 export const MobileNavLinksContainer = tw.nav`flex flex-1 items-center justify-between`;
 export const NavToggle = tw.button`
   lg:hidden z-20 focus:outline-none hocus:text-primary-500 transition duration-300
@@ -67,10 +62,7 @@ const Nav = ({
 }) => {
   const USER = useSelector((state) => state.User);
   const CART = useSelector((state) => state.Cart); // Assuming cart is the name of the cart slice
-  const totalItems = CART.items.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalItems = CART.totalQuantity;
   const dispatch = useDispatch();
   /*
    * This header component accepts an optionals "links" prop that specifies the links to render in the navbar.
@@ -91,27 +83,30 @@ const Nav = ({
   }
   const defaultLinks = [
     <NavLinks key={1}>
-      <NavLink href='/'>Home</NavLink>
-      <NavLink href='/menu'>Menu</NavLink>
-      <NavLink href='/contact'>Contact Us</NavLink>
+      <NavLink to='/'>Home</NavLink>
+      <NavLink to='/menu'>Menu</NavLink>
+      <NavLink to='/contact'>Contact Us</NavLink>
 
       {USER.isLoggedIn ? (
-        <PrimaryLink
-          css={roundedHeaderButton && tw`rounded-full`}
-          onClick={handleLogout}
-          href=''
-        >
-          Logout
-        </PrimaryLink>
+        <>
+          <NavLink to='/user/profile'>Profile</NavLink>
+          <PrimaryLink
+            css={roundedHeaderButton && tw`rounded-full`}
+            onClick={handleLogout}
+            to=''
+          >
+            Logout
+          </PrimaryLink>
+        </>
       ) : (
         <PrimaryLink
           css={roundedHeaderButton && tw`rounded-full`}
-          href='/user/login'
+          to='/user/login'
         >
           Login
         </PrimaryLink>
       )}
-      <NavLink href='/cart'>Cart ({totalItems})</NavLink>
+      {totalItems > 0 && <NavLink to='/cart'>Cart ({totalItems})</NavLink>}
     </NavLinks>,
   ];
 
@@ -120,7 +115,7 @@ const Nav = ({
     collapseBreakPointCssMap[collapseBreakpointClass];
 
   const defaultLogoLink = (
-    <LogoLink href='/'>
+    <LogoLink to='/'>
       <img src={logo} alt='logo' />
       Tikvahs
     </LogoLink>
