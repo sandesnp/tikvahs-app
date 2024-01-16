@@ -22,9 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public')); //thats two underscore
 app.options('*', cors());
 app.use(cors());
-app.get('/', (req, res) => {
-  res.send('just checking');
-});
 
 mongoose.connect(
   process.env.MONGODB,
@@ -54,14 +51,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //passport.js
-// require('./passport').auth(passport);
+require('./passport').auth(passport);
 
 //adding routes to middleware
-// app.use('/api/user', USER);
-// app.use('/api/product', PRODUCT);
-// app.use('/api/image', IMAGE);
-// app.use('/api/order', ORDER);
-// app.use('/admin', ADMIN);
+app.use('/api/user', USER);
+app.use('/api/product', PRODUCT);
+app.use('/api/image', IMAGE);
+app.use('/api/order', ORDER);
+app.use('/admin', ADMIN);
 
 app.use(express.static(__dirname + '/client/build'));
 //except for api requests all other requests will be listened by client
