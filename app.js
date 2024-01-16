@@ -26,17 +26,17 @@ app.get('/', (req, res) => {
   res.send('just checking');
 });
 
-// mongoose.connect(
-//   process.env.MONGODB,
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     useFindAndModify: false,
-//   },
-//   function () {
-//     console.log(`Successfully connected to mongodb server`);
-//   }
-// );
+mongoose.connect(
+  process.env.MONGODB,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  },
+  function () {
+    console.log(`Successfully connected to mongodb server`);
+  }
+);
 
 app.use(
   session({
