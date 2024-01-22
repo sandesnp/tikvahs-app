@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Card, CardBody } from 'reactstrap';
 import { useLocation } from 'react-router-dom';
 
@@ -7,10 +9,18 @@ function useQuery() {
 }
 
 const OrderConfirmation = () => {
+  const USER = useSelector((state) => state.User);
   const query = useQuery();
   const email = query.get('email');
   const orderId = query.get('orderId');
 
+  if (USER.data.email !== email) {
+    return <Navigate to='/' replace={true} />;
+  }
+
+  if (!USER.isLoggedIn) {
+    return <Navigate to='/user/login' replace={true} />;
+  }
   return (
     <Container
       className='d-flex justify-content-center align-items-center'
@@ -29,14 +39,13 @@ const OrderConfirmation = () => {
               <h2>Hey {email}</h2>
               <h3 className='text-success'>Your Order is Confirmed!</h3>
               <p>
-                We'll send you a shipping confirmation email as soon as your
-                order ships.
+                Thank you for your order from our bakery! We're currently
+                preparing your delicious baked goods with care.
               </p>
               <Button
                 tag='a'
                 href={`/order/${orderId}`}
                 color='primary'
-                target='_blank'
                 className='mt-4'
               >
                 Check Status

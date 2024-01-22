@@ -44,3 +44,12 @@
 .iKrKeo {
   @include darkenLink;
 }
+
+.light__Header-sc-1dasr60-0,
+.fSXhoR,
+.header-light {
+  width: 100%;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  max-width: none !important;
+}

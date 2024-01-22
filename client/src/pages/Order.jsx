@@ -9,6 +9,8 @@ import {
   Row,
   Col,
   Container,
+  ListGroup,
+  ListGroupItem,
 } from 'reactstrap';
 import axios from 'axios';
 
@@ -56,9 +58,9 @@ const OrderSummary = () => {
   };
 
   return (
-    <Container>
-      <Row className='my-5'>
-        <Col sm='12' md='8'>
+    <Container className='order'>
+      <div className='order__main-container'>
+        <div className='order__heading'>
           <h3>
             #{order._id}{' '}
             <span className='text-muted'>
@@ -69,34 +71,31 @@ const OrderSummary = () => {
             {new Date(order.createdAt).toLocaleString()}{' '}
             {order.orderDetails.length} item(s)
           </p>
+        </div>
+        <div className='order__left-section'>
           <Card>
-            <CardBody>
+            <ListGroup>
               <CardTitle tag='h5'>Order summary</CardTitle>
               {order.orderDetails.map((item, index) => (
-                <Row key={index}>
-                  <Col xs='3'>
-                    {/* Placeholder for product image */}
-                    <img
-                      style={{
-                        backgroundColor: '#EEE',
-                        width: '100%',
-                        height: '100px',
-                      }}
-                      src={`${
-                        window.location.host === 'localhost:3000'
-                          ? '//localhost:5010'
-                          : ''
-                      }/api/image/${item.product.imageUrl}`}
-                      alt='tikvahs '
-                    />
-                  </Col>
-                  <Row xs='9'>
-                    <CardText>{item.product.name}</CardText>
-                    <CardText>Qty: {item.quantity}</CardText>
+                <ListGroupItem key={index}>
+                  <div className='order__product'>
+                    <figure>
+                      <img
+                        src={`${
+                          window.location.host === 'localhost:3000'
+                            ? '//localhost:5010'
+                            : ''
+                        }/api/image/${item.product.imageUrl}`}
+                        alt='tikvahs '
+                      />
+                    </figure>
 
-                    <CardText>£{item.product.price}</CardText>
-                  </Row>
-                </Row>
+                    <h1>{item.product.name}</h1>
+                    <h2>Qty: {item.quantity}</h2>
+
+                    <h3>${item.product.price}</h3>
+                  </div>
+                </ListGroupItem>
               ))}
               <hr />
 
@@ -112,21 +111,20 @@ const OrderSummary = () => {
                   </CardText>
                 </Col>
               </Row>
-            </CardBody>
+            </ListGroup>
           </Card>
-        </Col>
-        <Col sm='12' md='4'>
+        </div>
+        <div className='order__right-section'>
           <Card>
             <CardBody>
-              <CardTitle tag='h5'>Customer</CardTitle>
-              <CardText>Contact</CardText>
+              <CardTitle tag='h5'>{USER.data.email}</CardTitle>
               <CardText>{order.user.name}</CardText>
               <CardText>{order.user.email}</CardText>
               <CardText>{formatAddress(order.shippingAddress)}</CardText>
             </CardBody>
           </Card>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Container>
   );
 };
