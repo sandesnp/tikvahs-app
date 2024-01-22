@@ -7,8 +7,9 @@ function useQuery() {
 }
 
 const OrderConfirmation = () => {
-  let query = useQuery();
-  let email = query.get('email');
+  const query = useQuery();
+  const email = query.get('email');
+  const orderId = query.get('orderId');
 
   return (
     <Container
@@ -31,7 +32,13 @@ const OrderConfirmation = () => {
                 We'll send you a shipping confirmation email as soon as your
                 order ships.
               </p>
-              <Button color='pink' className='mt-4'>
+              <Button
+                tag='a'
+                href={`/order/${orderId}`}
+                color='primary'
+                target='_blank'
+                className='mt-4'
+              >
                 Check Status
               </Button>
             </CardBody>

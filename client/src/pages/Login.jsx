@@ -119,6 +119,13 @@ const Login = ({
 
   // Redirect if logged in
   if (USER.isLoggedIn) {
+    if (
+      USER.data.message === 'admin@admin' ||
+      USER.data.email === 'admin@admin'
+    ) {
+      return <Navigate to='/admin/dashboard' replace={true} />;
+    }
+
     return <Navigate to='/' replace={true} />;
   }
   return (

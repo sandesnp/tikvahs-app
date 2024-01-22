@@ -10,6 +10,7 @@ import { ReactComponent as SvgDecoratorBlob1 } from '../images/svg-decorator-blo
 import { ReactComponent as SvgDecoratorBlob2 } from '../images/svg-decorator-blob-7.svg';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Spinner } from 'reactstrap';
 
 const HeaderRow = tw.div`flex justify-between items-center flex-col xl:flex-row`;
 const Header = tw(SectionHeading)``;
@@ -91,7 +92,6 @@ export default ({ heading = 'Checkout the Menu' }) => {
     setIsLoading(true);
     try {
       const response = await axios.get(`/api/product/category/${categoryName}`);
-      console.log('products', response.data);
       setProducts(response.data);
     } catch (error) {
       console.error(
@@ -126,7 +126,7 @@ export default ({ heading = 'Checkout the Menu' }) => {
         </HeaderRow>
 
         {isLoading ? (
-          <div>Loading...</div>
+          <Spinner color='success'>Loading...</Spinner>
         ) : (
           <TabContent
             variants={{

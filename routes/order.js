@@ -61,11 +61,11 @@ route.get('/success', async (req, res) => {
     });
 
     // Save the order
-    await newOrder.save();
+    const savedOrder = await newOrder.save();
 
     // Redirect or respond as needed
     res.redirect(
-      `${process.env.CLIENT_LINK}/order/success?email=${req.user.email}`
+      `${process.env.CLIENT_LINK}/order/success?email=${req.user.email}&orderId=${savedOrder._id}`
     ); // Adjust the redirect as necessary
   } catch (error) {
     console.error(error);
@@ -134,7 +134,6 @@ route.post(
         cancel_url: `${process.env.SERVER_LINK}/api/order/cancel`,
       });
 
-      console.log({ success: true, url: session.url });
       res.json({ success: true, url: session.url });
     } catch (error) {
       console.error(error);

@@ -305,6 +305,14 @@ body {
   color: #f5f7f8;
 }
 
+.app {
+  display: flex;
+  flex-direction: column;
+}
+.app > *:nth-child(2) {
+  min-height: 60vh;
+}
+
 .menu {
   padding-top: 5rem;
   padding-left: 20rem;

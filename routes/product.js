@@ -70,7 +70,6 @@ router.get('/category', async (req, res) => {
 
     // Extract the categories array from the aggregation result
     const categoryList = categories.length > 0 ? categories[0].categories : [];
-    console.log(categoryList);
     res.json(categoryList);
   } catch (err) {
     res.status(500).json({ message: err.message });

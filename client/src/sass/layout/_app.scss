@@ -3,3 +3,12 @@
 //   border: 1px solid rgba(0, 0, 0, 0.1);
 //   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
 // }
+
+.app {
+  display: flex;
+  flex-direction: column;
+
+  & > *:nth-child(2) {
+    min-height: 60vh;
+  }
+}
