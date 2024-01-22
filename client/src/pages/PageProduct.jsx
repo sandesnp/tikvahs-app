@@ -30,7 +30,7 @@ export default function PageProduct() {
       </figure>
       <div className='pageproduct__information'>
         <h1 className='pageproduct__name'>{product.name}</h1>
-        <h1 className='pageproduct__price'>{product.category}</h1>
+        <h1 className='pageproduct__category'>{product.category}</h1>
         <p className='pageproduct__price'>{product.price}</p>
         <p className='pageproduct__description'>{product.description}</p>
         <label htmlFor='quantity'>Quantity:</label>
@@ -38,11 +38,15 @@ export default function PageProduct() {
         <div className='quantity-input'>
           <button
             className='decrement'
-            onClick={() => setQuantity((prev) => prev && prev - 1)}
+            onClick={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
           >
             -
           </button>
-          <input type='number' value={quantity} />
+          <input
+            type='number'
+            value={quantity}
+            onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))}
+          />
           <button
             className='increment'
             onClick={() => setQuantity((prev) => prev + 1)}

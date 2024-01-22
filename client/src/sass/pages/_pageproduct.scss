@@ -1,81 +1,100 @@
 .pageproduct {
   display: flex;
+  padding: 4rem 10rem;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
 
   &__image {
     flex: 1;
     img {
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
+
   &__information {
     flex: 1;
-    margin-top: 5rem;
-    padding-left: 5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    align-items: flex-start;
+    gap: 1rem;
   }
+
   &__name {
     font-family: $font-title-B;
-    font-size: 5rem;
-    letter-spacing: 2px;
-    font-weight: 500;
-  }
-  &__price {
     font-size: 3rem;
+    color: #333;
   }
+
+  &__category {
+    font-size: 1.5rem;
+    color: #666;
+  }
+
+  &__price {
+    font-size: 2.5rem;
+    color: #111;
+    font-weight: bold;
+  }
+
   &__description {
     font-family: $font-content;
-
-    letter-spacing: 2px;
-    line-height: 2;
+    color: #333;
+    line-height: 1.6;
+    max-width: 600px;
   }
+
   &__button {
-    font-size: 3rem;
-    padding: 1.5rem 3rem;
-    background-color: orange;
-    font-family: $font-title-B;
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    background-color: #ff9900;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: #e68a00;
+    }
   }
 }
 
 .quantity-input {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: $color-orange; /* Blue background */
-  border-radius: 10px; /* Rounded corners */
-  width: 120px; /* Adjust as needed */
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+
+  button {
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: #e6e6e6;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input {
+    width: 50px;
+    border: none;
+    text-align: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
-.quantity-input input {
-  width: 40px; /* Width of the number input */
-  border: none; /* Remove border */
-  text-align: center; /* Center the text */
-  font-size: 16px; /* Large font size */
-  color: white; /* White text color */
-  background: none; /* Transparent background */
-}
-
-.quantity-input button {
-  background: none; /* Transparent background */
-  border: none; /* Remove border */
-  color: white; /* White text color */
-  font-size: 20px; /* Large font size */
-  padding: 10px; /* Padding around the buttons */
-  cursor: pointer; /* Cursor indicates button */
-  user-select: none; /* Prevent text selection */
-}
-
-/* Remove the spinner from the input type number */
-.quantity-input input::-webkit-outer-spin-button,
-.quantity-input input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.quantity-input input[type='number'] {
-  -moz-appearance: textfield; /* Firefox */
-}
+// Other styles remain unchanged
