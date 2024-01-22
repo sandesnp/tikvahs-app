@@ -14,6 +14,7 @@ export default function PageProduct() {
   };
   useEffect(() => {
     axios.get(`/api/product/${productId}`).then((response) => {
+      console.log(response.data);
       setProduct(response.data);
     });
   }, [productId]);
@@ -29,6 +30,7 @@ export default function PageProduct() {
       </figure>
       <div className='pageproduct__information'>
         <h1 className='pageproduct__name'>{product.name}</h1>
+        <h1 className='pageproduct__price'>{product.category}</h1>
         <p className='pageproduct__price'>{product.price}</p>
         <p className='pageproduct__description'>{product.description}</p>
         <label htmlFor='quantity'>Quantity:</label>

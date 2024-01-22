@@ -36,6 +36,12 @@ route.get('/', async (req, res) => {
 
 route.get('/success', async (req, res) => {
   try {
+    // Retrieve the Stripe session using the session ID
+    const session = await stripe.checkout.sessions.retrieve(
+      req.query.session_id
+    );
+
+    const shippingDetails = session.shipping_details;
     // Parse the query parameters
     const items = JSON.parse(req.query.items);
 
@@ -47,22 +53,29 @@ route.get('/success', async (req, res) => {
 
     // Create a new Order document
     const newOrder = new ORDER({
+      user: req.user._id,
       orderDetails: orderDetails,
-      orderStatus: true,
+      orderStatus: false,
+      shippingAddress: shippingDetails.address,
+      paymentStatus: true,
     });
 
     // Save the order
     await newOrder.save();
-    console.log('check');
 
     // Redirect or respond as needed
-    res.redirect('/menu'); // Adjust the redirect as necessary
+    res.redirect(
+      `${process.env.CLIENT_LINK}/order/success?email=${req.user.email}`
+    ); // Adjust the redirect as necessary
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Internal Server Error' });
   }
 });
 
+route.get('/cancel', (req, res) => {
+  res.redirect(process.env.CLIENT_LINK + '/');
+});
 route.post(
   '/create-checkout-session',
   checkAuthenticated,
@@ -106,7 +119,8 @@ route.post(
           }))
         ),
       });
-      const successUrl = `${process.env.SERVER_LINK}/api/order/success?${queryData}`;
+      //In cloud service we use env variable to let stripe know return location.
+      const successUrl = `${process.env.SERVER_LINK}/api/order/success?session_id={CHECKOUT_SESSION_ID}&${queryData}`;
 
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
@@ -117,9 +131,10 @@ route.post(
           allowed_countries: ['AU'], // Modify as per your requirement
         },
         success_url: successUrl,
-        cancel_url: `${process.env.SERVER_LINK}/api/product/order/cancel`,
+        cancel_url: `${process.env.SERVER_LINK}/api/order/cancel`,
       });
 
+      console.log({ success: true, url: session.url });
       res.json({ success: true, url: session.url });
     } catch (error) {
       console.error(error);
@@ -128,18 +143,45 @@ route.post(
   }
 );
 
+// GET - Retrieve all orders for the logged-in user with details
+route.get('/my-purchase', checkAuthenticated, async (req, res) => {
+  try {
+    const userId = req.user._id; // Assuming req.user is populated by Passport after login
+
+    const orders = await ORDER.find({ user: userId }).lean(); // Use lean() for performance if you only need plain objects
+
+    // Transform the orders to include total items and total quantity
+    const transformedOrders = orders.map((order) => {
+      const totalItems = order.orderDetails.length;
+      const totalQuantity = order.orderDetails.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+      return {
+        orderId: order._id,
+        totalItems,
+        totalQuantity,
+        timestamp: order.createdAt, // Assuming createdAt is a field added by timestamps in your schema
+        orderStatus: order.orderStatus, // Assuming this is a string that reflects the current delivery status
+      };
+    });
+
+    res.json(transformedOrders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 // GET - Retrieve a single order by ID
 route.get('/:id', async (req, res) => {
   try {
-    const order = await ORDER.findById(req.params.id)
-      .populate('orderDetails.product', [
-        'name',
-        'description',
-        'price',
-        'imageUrl',
-      ])
-      .populate('deliveryPerson', ['email', 'userType']);
+    const order = await ORDER.findById(req.params.id).populate(
+      'orderDetails.product',
+      ['name', 'description', 'price', 'imageUrl']
+    );
     if (!order) return res.status(404).json({ message: 'Order not found' });
+
     res.json(order);
   } catch (error) {
     res.status(500).json({ message: error.message });

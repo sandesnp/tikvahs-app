@@ -19,6 +19,7 @@ export default function Product() {
     name: '',
     description: '',
     price: '',
+    category: '',
     imageUrl: '',
     id: '',
   });
@@ -29,6 +30,7 @@ export default function Product() {
     name: '',
     description: '',
     price: '',
+    category: '',
     imageUrl: '',
   });
   const [newProductFile, setNewProductFile] = useState(null);
@@ -153,6 +155,7 @@ export default function Product() {
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Cake</th>
             <th>Description</th>
             <th>Price</th>
             <th>Image</th>
@@ -165,6 +168,7 @@ export default function Product() {
             <tr key={product._id}>
               <th scope='row'>{index + 1}</th>
               <td>{product.name}</td>
+              <td>{product.category}</td>
               <td>{product.description}</td>
               <td>{product.price}</td>
               <td>
@@ -206,6 +210,18 @@ export default function Product() {
               id='name'
               placeholder='Name'
               value={currentProduct.name}
+              onChange={handleInputChange}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <Label for='category'>Category</Label>
+            <Input
+              type='text'
+              name='category'
+              id='category'
+              placeholder='Category'
+              value={currentProduct.category}
               onChange={handleInputChange}
             />
           </FormGroup>
@@ -264,6 +280,17 @@ export default function Product() {
               id='name'
               placeholder='Name'
               value={newProduct.name}
+              onChange={handleNewProductChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for='category'>Category</Label>
+            <Input
+              type='text'
+              name='category'
+              id='category'
+              placeholder='Category'
+              value={newProduct.category}
               onChange={handleNewProductChange}
             />
           </FormGroup>

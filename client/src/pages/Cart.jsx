@@ -1,10 +1,14 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { removeItem, updateQuantity, checkoutCart } from '../redux/cartSlice';
 
 export default function Cart() {
   const Cart = useSelector((state) => state.Cart);
+  const USER = useSelector((state) => state.User);
+
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { items, totalAmount } = Cart;
   const handleRemove = (id) => {
@@ -15,6 +19,9 @@ export default function Cart() {
   };
 
   const handleCheckout = () => {
+    if (!USER.isLoggedIn) {
+      return navigate('/user/login');
+    }
     dispatch(checkoutCart())
       .then((action) => {
         if (action) {
@@ -29,6 +36,7 @@ export default function Cart() {
   if (Cart.totalQuantity < 1) {
     return <Navigate to='/' replace={true} />;
   }
+
   return (
     <div className='cart-container'>
       <div className='cart-header'>

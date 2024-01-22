@@ -17,6 +17,9 @@ import Home from 'pages/Home';
 import Contact from 'components/forms/TwoColContactUsWithIllustrationFullForm';
 import Footer from 'components/footers/MiniCenteredFooter';
 import Header from './components/headers/light';
+import PurchaseHistory from 'pages/PurchaseHistory';
+import Order from 'pages/Order';
+import OrderConfirmation from 'pages/OrderConfirmation';
 
 export default function App() {
   // const USER = useSelector((state) => state.User);
@@ -32,14 +35,24 @@ export default function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path='/menu' element={<TabCardGrid />} />
-          <Route path='/menu/:productId' element={<PageProduct />} />
+          <Route path='/' element={<Home />} />
+
           <Route path='/contact' element={<Contact />} />
+
+          {/* Menu Routes */}
+          <Route path='/menu' element={<TabCardGrid />} />
+          <Route path='/menu/upload' element={<ProductForm />} />
+          <Route path='/menu/:productId' element={<PageProduct />} />
+
+          {/* User Routes */}
           <Route path='/user/login' element={<Login />} />
           <Route path='/user/createpassword' element={<CreatePassword />} />
-          <Route path='/menu/upload' element={<ProductForm />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/' element={<Home />} />
+          <Route path='/user/purchase-history' element={<PurchaseHistory />} />
+
+          {/* Order Routes */}
+          <Route path='/order/cart' element={<Cart />} />
+          <Route path='order/success' element={<OrderConfirmation />} />
+          <Route path='order/:orderId' element={<Order />} />
 
           <Route path='/admin' element={<AdminView />}>
             {/* Make the admin/dashboard component the default */}

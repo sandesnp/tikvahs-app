@@ -3,7 +3,7 @@ function checkAuthenticated(req, res, next) {
     //jumps to next middleware
     return next();
   }
-  return res.status(500).json({ message: 'You are not authorized yet.' });
+  return res.redirect(500, '/user/login');
 }
 
 function checkNotAuthenticated(req, res, next) {
@@ -11,7 +11,7 @@ function checkNotAuthenticated(req, res, next) {
     //jumps to next middleware
     return next();
   }
-  return res.status(404).json({ error: 'You are already logged in.' });
+  return res.redirect(302, '/');
 }
 
 function checkAdmin(req, res, next) {

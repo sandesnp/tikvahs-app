@@ -58,54 +58,77 @@ const DecoratorBlob2 = styled(SvgDecoratorBlob2)`
 `;
 
 export default ({ heading = 'Checkout the Menu' }) => {
-  /*
-   * To customize the tabs, pass in data using the `tabs` prop. It should be an object which contains the name of the tab
-   * as the key and value of the key will be its content (as an array of objects).
-   * To see what attributes are configurable of each object inside this array see the example above for "Starters".
-   */
-
-  const [tabs, setTabs] = useState({
-    'Our Dishes': [], // Initial empty array for 'Our Dishes'
-  });
-  const tabsKeys = Object.keys(tabs);
-  const [activeTab, setActiveTab] = useState(tabsKeys[0]);
+  const [categories, setCategories] = useState([]);
+  const [activeTab, setActiveTab] = useState('');
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    axios.get('/api/product/').then((response) => {
-      const products = response.data;
-      const updatedTabs = {
-        'Our Dishes': products.map((product) => ({
-          title: product.name,
-          content: product.description,
-          price: product.price,
-          imageSrc: `/api/image/${product.imageUrl}`,
-          url: `/menu/${product._id}`,
-        })),
-      };
-      setTabs(updatedTabs); // Update the state with the transformed data
-    });
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('/api/product/category');
+        const fetchedCategories = response.data;
+        setCategories(fetchedCategories);
+
+        // Pick a random category to display initially
+        if (fetchedCategories.length > 0) {
+          const randomCategory =
+            fetchedCategories[
+              Math.floor(Math.random() * fetchedCategories.length)
+            ];
+          setActiveTab(randomCategory);
+          fetchProductsForCategory(randomCategory);
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
   }, []);
+
+  const fetchProductsForCategory = async (categoryName) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/product/category/${categoryName}`);
+      console.log('products', response.data);
+      setProducts(response.data);
+    } catch (error) {
+      console.error(
+        `Error fetching products for category ${categoryName}:`,
+        error
+      );
+    }
+    setIsLoading(false);
+  };
+  const handleCategoryClick = (categoryName) => {
+    if (categoryName !== activeTab) {
+      setActiveTab(categoryName);
+      fetchProductsForCategory(categoryName);
+    }
+  };
   return (
     <Container>
       <ContentWithPaddingXl>
         <HeaderRow>
           <Header>{heading}</Header>
           <TabsControl>
-            {Object.keys(tabs).map((tabName, index) => (
+            {categories.map((category, index) => (
               <TabControl
                 key={index}
-                active={activeTab === tabName}
-                onClick={() => setActiveTab(tabName)}
+                active={activeTab === category}
+                onClick={() => handleCategoryClick(category)}
               >
-                {tabName}
+                {category}
               </TabControl>
             ))}
           </TabsControl>
         </HeaderRow>
 
-        {tabsKeys.map((tabKey, index) => (
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
           <TabContent
-            key={index}
             variants={{
               current: {
                 opacity: 1,
@@ -119,19 +142,25 @@ export default ({ heading = 'Checkout the Menu' }) => {
               },
             }}
             transition={{ duration: 0.4 }}
-            initial={activeTab === tabKey ? 'current' : 'hidden'}
-            animate={activeTab === tabKey ? 'current' : 'hidden'}
+            initial='hidden'
+            animate='current'
           >
-            {tabs[tabKey].map((card, index) => (
+            {products.map((card, index) => (
               <CardContainer key={index}>
                 <Card
                   className='group'
-                  to={card.url}
+                  to={`/menu/${card._id}`}
                   initial='rest'
                   whileHover='hover'
                   animate='rest'
                 >
-                  <CardImageContainer imageSrc={card.imageSrc}>
+                  <CardImageContainer
+                    imageSrc={`${
+                      window.location.host === 'localhost:3000'
+                        ? '//localhost:5010'
+                        : ''
+                    }/api/image/${card.imageUrl}`}
+                  >
                     <CardHoverOverlay
                       variants={{
                         hover: {
@@ -149,15 +178,15 @@ export default ({ heading = 'Checkout the Menu' }) => {
                     </CardHoverOverlay>
                   </CardImageContainer>
                   <CardText>
-                    <CardTitle>{card.title}</CardTitle>
-                    <CardContent>{card.content}</CardContent>
+                    <CardTitle>{card.name}</CardTitle>
+                    <CardContent>{card.description}</CardContent>
                     <CardPrice>{card.price}</CardPrice>
                   </CardText>
                 </Card>
               </CardContainer>
             ))}
           </TabContent>
-        ))}
+        )}
       </ContentWithPaddingXl>
       <DecoratorBlob1 />
       <DecoratorBlob2 />

@@ -90,6 +90,7 @@ const Nav = ({
       {USER.isLoggedIn ? (
         <>
           <NavLink to='/user/profile'>Profile</NavLink>
+          <NavLink to='/user/purchase-history'>Purchase History</NavLink>
           <PrimaryLink
             css={roundedHeaderButton && tw`rounded-full`}
             onClick={handleLogout}
@@ -106,7 +107,9 @@ const Nav = ({
           Login
         </PrimaryLink>
       )}
-      {totalItems > 0 && <NavLink to='/cart'>Cart ({totalItems})</NavLink>}
+      {totalItems > 0 && (
+        <NavLink to='/order/cart'>Cart ({totalItems})</NavLink>
+      )}
     </NavLinks>,
   ];
 
