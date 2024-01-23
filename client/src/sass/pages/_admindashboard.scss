@@ -21,7 +21,10 @@
     }
   }
 }
-
+main,
+.main-content {
+  overflow: scroll !important;
+}
 .main-content {
   flex-grow: 1;
   background-color: $main-bg;

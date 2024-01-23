@@ -19,9 +19,9 @@ export default function AdminView() {
           </ul>
         </nav>
       </aside>
-      <main className='main-content'>
+      <div className='main-content' style={{ overflow: 'scroll' }}>
         <Outlet />
-      </main>
+      </div>
     </div>
   );
 }
