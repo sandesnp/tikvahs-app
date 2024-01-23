@@ -8,7 +8,6 @@ const cors = require('cors');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 require('dotenv').config();
-
 //routes
 const USER = require('./routes/user');
 const PRODUCT = require('./routes/product');

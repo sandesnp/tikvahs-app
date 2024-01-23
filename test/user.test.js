@@ -50,6 +50,4 @@ describe('User API', () => {
         });
     });
   });
-
-  // Add more tests for other endpoints following the same pattern
 });

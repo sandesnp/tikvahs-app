@@ -8,7 +8,7 @@
     "build-client": "cd client && npm run build",
     "postinstall": "npm run install-client && npm run build-client",
     "start": "nodemon app.js",
-    "test": "PORT=5001 mocha --exit "
+    "test": "PORT=5001 mocha --exit"
   },
   "keywords": [],
   "author": "",
