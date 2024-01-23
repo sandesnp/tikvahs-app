@@ -41,6 +41,15 @@ const IllustrationImage = styled.div`
   ${tw`m-12 xl:m-16 w-full max-w-sm bg-contain bg-center bg-no-repeat`}
 `;
 
+// Additional styles for buttons to differentiate between primary (update) and secondary (cancel) actions
+const PrimaryButton = styled(SubmitButton)`
+  ${tw`bg-purple-500 hover:bg-purple-700`}
+`;
+
+const SecondaryButton = styled(SubmitButton)`
+  ${tw`bg-gray-400 hover:bg-gray-500 mt-3`}
+`;
+
 const UserProfile = () => {
   const USER = useSelector((state) => state.User);
   const dispatch = useDispatch();
@@ -132,19 +141,22 @@ const UserProfile = () => {
         <Content>
           <MainContainer>
             <LogoLink href='#'>
-              <LogoImage src={logo} />
+              <LogoImage src={logo} className='logo-image' />
             </LogoLink>
-            <MainContent>
+            <MainContent className='main-content'>
               <Heading>Update Profile</Heading>
-              <FormContainer>
+              <FormContainer className='form-container'>
                 {validationMessage && (
-                  <DividerTextContainer>
-                    <DividerText>{validationMessage}</DividerText>
+                  <DividerTextContainer className='divider-text-container'>
+                    <DividerText className='divider-text'>
+                      {validationMessage}
+                    </DividerText>
                   </DividerTextContainer>
                 )}
-                <Form>
-                  <h4 style={{ textAlign: 'center' }}> {USER.data.email}</h4>
+                <Form className='form'>
+                  <h4 className='user-email'>{USER.data.email}</h4>
                   <Input
+                    className='input'
                     type='password'
                     placeholder='Password'
                     name='password'
@@ -153,6 +165,7 @@ const UserProfile = () => {
                     maxLength={50}
                   />
                   <Input
+                    className='input'
                     type='password'
                     placeholder='Confirm Password'
                     name='confirmPassword'
@@ -160,16 +173,13 @@ const UserProfile = () => {
                     onChange={handleChange}
                     maxLength={50}
                   />
-                  <SubmitButton onClick={validateAndSubmit}>
+                  <PrimaryButton type='button' onClick={validateAndSubmit}>
                     <LoginIcon className='icon' />
                     <span className='text'>Update</span>
-                  </SubmitButton>
-                  <SubmitButton
-                    onClick={resetFields}
-                    style={{ background: 'grey' }}
-                  >
+                  </PrimaryButton>
+                  <SecondaryButton type='button' onClick={resetFields}>
                     <span className='text'>Cancel</span>
-                  </SubmitButton>
+                  </SecondaryButton>
                 </Form>
               </FormContainer>
             </MainContent>

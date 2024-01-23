@@ -7,7 +7,8 @@
     "install-client": "cd client && npm install",
     "build-client": "cd client && npm run build",
     "postinstall": "npm run install-client && npm run build-client",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "PORT=5001 mocha --exit "
   },
   "keywords": [],
   "author": "",
@@ -29,5 +30,10 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "stripe": "^14.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0"
   }
 }

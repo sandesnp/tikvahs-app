@@ -31,16 +31,19 @@ export default function PurchaseHistory() {
     if (isLoading) {
       return (
         <div className='text-center'>
-          <Spinner color='success' />
+          <Spinner color='primary' style={{ width: '3rem', height: '3rem' }} />{' '}
+          {/* Adjusted for better visual */}
         </div>
       );
     } else if (orders.length === 0) {
       return (
-        <div className='text-center'>There are no orders made as of now.</div>
+        <div className='text-center'>
+          <p>There are no orders made as of now.</p>
+        </div>
       );
     } else {
       return (
-        <Table hover responsive>
+        <Table hover responsive className='table'>
           <thead>
             <tr>
               <th>Order ID</th>

@@ -48,6 +48,7 @@ export default function App() {
           <Route path='/user/login' element={<Login />} />
           <Route path='/user/createpassword' element={<CreatePassword />} />
           <Route path='/user/purchase-history' element={<PurchaseHistory />} />
+          <Route path='/user/profile' element={<UserProfile />} />
 
           {/* Order Routes */}
           <Route path='/order/cart' element={<Cart />} />
@@ -61,7 +62,6 @@ export default function App() {
             <Route path='/admin/user' element={<UserManagement />} />
             <Route path='/admin/product' element={<ProductManagement />} />
           </Route>
-          <Route path='/user/profile' element={<UserProfile />} />
         </Routes>
         <Footer />
       </BrowserRouter>

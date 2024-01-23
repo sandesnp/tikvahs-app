@@ -39,13 +39,7 @@ export default function Cart() {
 
   return (
     <div className='cart-container'>
-      <div className='cart-header'>
-        <div>PRODUCT</div>
-        <div>PRICE</div>
-        <div>QUANTITY</div>
-        <div>TOTAL</div>
-        <div>REMOVE</div>
-      </div>
+      <h1 className='cart-header'>My Cart</h1>
       {items.length > 0 &&
         items.map((item) => (
           <div key={item._id} className='cart-item'>
@@ -79,7 +73,7 @@ export default function Cart() {
               </button>
             </div>
             <div className='item-quantity'>
-              <p>${Math.round(item.quantity * item.price * 100) / 100}USD</p>
+              <p>${Math.round(item.quantity * item.price * 100) / 100}</p>
             </div>
             <button
               className='remove-button'
@@ -90,7 +84,7 @@ export default function Cart() {
           </div>
         ))}
       <div className='cart-total'>
-        <h3>Total: {totalAmount} USD</h3>
+        <h3>Total: ${totalAmount}</h3>
       </div>
       <button className='checkout-button' onClick={handleCheckout}>
         Checkout

@@ -1,80 +1,3 @@
-.footer {
-  background-color: $color-black;
-  padding: 5rem 0;
-  font-size: 1.4rem;
-  margin-top: 10rem;
-
-  @include respond(tab-port) {
-    padding: 8rem 0;
-  }
-
-  &__logo-box {
-    text-align: center;
-    margin-bottom: 8rem;
-    @include respond(tab-port) {
-      margin-bottom: 6rem;
-    }
-  }
-
-  &__logo {
-    text-align: center;
-    margin-bottom: 8rem;
-    font-family: $font-title-B;
-    font-size: 15rem;
-    font-weight: 200;
-    color: $color-white;
-    @include respond(tab-port) {
-      margin-bottom: 6rem;
-    }
-  }
-  &__navigation {
-    border-top: 1px solid $color-gray;
-    padding-top: 2rem;
-    display: inline-block;
-    @include respond(tab-port) {
-      width: 100%;
-      text-align: center;
-    }
-  }
-  &__list {
-    list-style: none;
-  }
-  &__item {
-    display: inline-block;
-
-    &:not(:last-child) {
-      margin-right: 1.5rem;
-    }
-  }
-  &__link {
-    &:link,
-    &:visited {
-      color: $color-white;
-      background-color: $color-black;
-      text-decoration: none;
-      text-transform: uppercase;
-      display: inline-block;
-      transition: all 0.2s;
-    }
-    &:hover,
-    &:active {
-      // color: $color-black;
-      box-shadow: 0 1rem 2rem rgba($color-black, 0.4);
-      transform: rotate(5deg) scale(1.3);
-    }
-  }
-  &__copyright {
-    border-top: 1px solid $color-gray;
-    padding-top: 2rem;
-    float: right;
-    color: $color-white;
-    @include respond(tab-port) {
-      width: 100%;
-      text-align: center;
-    }
-  }
-}
-
 .FiveColumnWithInputForm__LogoImg-sc-15nw9w3-17,
 .hoPdCh {
   width: 15rem !important;
@@ -84,4 +7,12 @@
 .sc-uVWWZ,
 .bxFlZX {
   @include whitenLink;
+}
+.sc-Nxspf,
+.YZmkV {
+  &:link,
+  &:visited {
+    color: $color-light !important;
+    text-decoration: none;
+  }
 }

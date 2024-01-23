@@ -76,46 +76,46 @@ const CreatePassword = () => {
   }
   return (
     <AnimationRevealPage>
-      <Container>
-        <Content>
-          <MainContainer>
-            <LogoLink href='#'>
-              <LogoImage src={logo} />
-            </LogoLink>
-            <MainContent>
-              <Heading>Create Password</Heading>
-              <FormContainer>
-                <DividerTextContainer>
-                  <DividerText>{notification}</DividerText>
-                </DividerTextContainer>
-                <Form onSubmit={handleSubmit}>
-                  <Input
-                    type='password'
-                    placeholder='Password'
-                    name='password'
-                    value={passwords.password}
-                    onChange={handleChange}
-                  />
-                  <Input
-                    type='password'
-                    placeholder='Confirm Password'
-                    name='repassword'
-                    value={passwords.repassword}
-                    onChange={handleChange}
-                  />
-                  <SubmitButton type='submit'>
-                    <LoginIcon className='icon' />
-                    <span className='text'>Create Password</span>
-                  </SubmitButton>
-                </Form>
-              </FormContainer>
-            </MainContent>
-          </MainContainer>
-          <IllustrationContainer>
-            <IllustrationImage imageSrc={illustration} />
-          </IllustrationContainer>
-        </Content>
-      </Container>
+      <Content className='content'>
+        <MainContainer className='main-container'>
+          <LogoLink href='#'>
+            <LogoImage src={logo} className='logo-image' />
+          </LogoLink>
+          <MainContent className='main-content'>
+            <Heading className='heading'>Create Password</Heading>
+            <FormContainer className='form-container'>
+              <DividerTextContainer>
+                <DividerText>{notification}</DividerText>
+              </DividerTextContainer>
+              <Form className='form' onSubmit={handleSubmit}>
+                <Input
+                  className='input'
+                  type='password'
+                  placeholder='Password'
+                  name='password'
+                  value={passwords.password}
+                  onChange={handleChange}
+                />
+                <Input
+                  className='input'
+                  type='password'
+                  placeholder='Confirm Password'
+                  name='repassword'
+                  value={passwords.repassword}
+                  onChange={handleChange}
+                />
+                <SubmitButton className='submit-button' type='submit'>
+                  <LoginIcon className='icon' />
+                  <span className='text'>Create Password</span>
+                </SubmitButton>
+              </Form>
+            </FormContainer>
+          </MainContent>
+        </MainContainer>
+        <IllustrationContainer className='illustration-container'>
+          <IllustrationImage imageSrc={illustration} />
+        </IllustrationContainer>
+      </Content>
     </AnimationRevealPage>
   );
 };

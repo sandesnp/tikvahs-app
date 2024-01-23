@@ -1,4 +1,61 @@
-// .spinner {
-//   width: 5rem;
-//   height: 5rem;
-// }
+.container {
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  max-width: 100%;
+  background-color: #fff;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin-top: 1rem;
+
+  thead {
+    tr {
+      background-color: #f2f2f2;
+      th {
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 1rem;
+        border-bottom: 2px solid #eaeaea;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f7f7f7;
+      }
+
+      td {
+        font-size: 0.9rem;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid #eaeaea;
+
+        a {
+          color: #007bff;
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+}
+
+.text-center {
+  text-align: center;
+  padding: 2rem 0;
+}

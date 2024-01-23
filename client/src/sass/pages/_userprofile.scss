@@ -1,0 +1,50 @@
+// Additional global styles
+.user-email {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: $color-black;
+}
+
+// Primary button styles
+.primary-button {
+  background-color: $color-primary;
+  &:hover {
+    background-color: lighten($color-primary, 10%);
+  }
+}
+
+// Secondary button styles
+.secondary-button {
+  background-color: $color-gray;
+  &:hover {
+    background-color: darken($color-gray, 10%);
+  }
+  // This will place the cancel button a bit lower than the update button
+  margin-top: 1rem;
+}
+
+// Adding padding to the main content for better spacing
+.main-content {
+  padding: 2rem;
+}
+
+// Divider text styles for notification messages
+.divider-text-container {
+  background-color: $color-light;
+  padding: 0.5rem;
+  border-radius: $border-radius;
+}
+
+.divider-text {
+  color: $color-danger;
+}
+
+// Adjustments to the input fields for a more cohesive look
+.input {
+  border: 1px solid $color-border;
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 0.2rem rgba($color-primary, 0.25);
+  }
+}

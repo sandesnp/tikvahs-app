@@ -1,13 +1,17 @@
+// Updated variables (variable1.0)
 $default-font-size: 1.6rem;
 
-//colors
+// Colors
 $color-black: #272829;
 $color-white: #f5f7f8;
 $color-orange: #fda769;
 $color-gray: #d8d9da;
+$color-blue: #3498db; // New
+$color-red: #e74c3c; // New
+$color-green: #2ecc71; // New
+$color-yellow: #f1c40f; // New
 
-//font
-
+// Font
 $font-main: 'Roboto Serif', serif;
 $font-content: 'Open Sans', sans-serif;
 $font-title-A: 'Montserrat', sans-serif;
@@ -19,20 +23,54 @@ $gutter-vertical-small: 6rem;
 $gutter-vertical: 8rem;
 $gutter-horizontal: 6rem;
 
-//pages/cart.scss
+// Pages/cart.scss
 $color-background: #f0f0f0;
 $color-border: #e0e0e0;
 $color-text: #333;
 $color-button-bg: #000;
 $color-button-text: #fff;
-$color-item-bg-hover: darken(
-  $color-background,
-  5%
-); // Example of using SCSS functions
+$color-item-bg-hover: darken($color-background, 5%);
 
-//pages/admindashboard.scss
+// Pages/admindashboard.scss
 $sidebar-bg: #2c3e50;
 $sidebar-text: #ecf0f1;
 $main-bg: #bdc3c7;
 $main-text: #333;
 $main-content-bg: #ecf0f1;
+
+// New additions
+$color-primary: $color-blue; // Primary color for your website
+$color-secondary: $color-gray; // Secondary color
+$color-info: $color-yellow; // Information messages or buttons
+$color-success: $color-green; // Success messages or buttons
+$color-warning: $color-orange; // Warning messages or buttons
+$color-danger: $color-red; // Danger alerts or buttons
+$color-light: #ecf0f1; // Light backgrounds or elements
+$color-dark: #34495e; // Dark text or elements
+
+// Border
+$border-radius: 4px; // Default border radius for buttons, inputs, etc.
+$border-color: $color-border; // Default border color
+
+// Shadow
+$box-shadow-light: 0 2px 4px rgba($color-black, 0.1); // Light box shadow
+$box-shadow-dark: 0 4px 8px rgba($color-black, 0.2); // Dark box shadow
+
+// Transition
+$transition-fast: 0.2s ease-in-out; // Fast transition for hover effects
+$transition-normal: 0.3s ease-in-out; // Normal transition for subtle animations
+$transition-slow: 0.5s ease-in-out; // Slow transition for more noticeable effects
+
+// Typography
+$heading-font-weight: 600; // Weight for headings
+$content-line-height: 1.6; // Line height for content
+$heading-line-height: 1.2; // Line height for headings
+
+// Z-index
+$zindex-dropdown: 1000;
+$zindex-sticky: 1020;
+$zindex-fixed: 1030;
+$zindex-modal-backdrop: 1040;
+$zindex-modal: 1050;
+$zindex-popover: 1060;
+$zindex-tooltip: 1070;
