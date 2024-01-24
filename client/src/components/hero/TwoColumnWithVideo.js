@@ -77,12 +77,14 @@ export default ({
           </LeftColumn>
           <RightColumn>
             <IllustrationContainer>
-              <img
-                css={imageCss}
-                src={imageSrc}
-                alt='Hero'
-                style={{ width: '800px' }}
-              />
+              <Link to='/menu'>
+                <img
+                  css={imageCss}
+                  src={imageSrc}
+                  alt='Hero'
+                  style={{ width: '800px' }}
+                />
+              </Link>
               {imageDecoratorBlob && <DecoratorBlob2 />}
             </IllustrationContainer>
           </RightColumn>

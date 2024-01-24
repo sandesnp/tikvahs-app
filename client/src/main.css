@@ -195,9 +195,9 @@ body {
   color: #f5f7f8;
 }
 
-.sc-Nxspf:link, .sc-Nxspf:visited,
-.YZmkV:link,
-.YZmkV:visited {
+.sc-hCPjZK:link, .sc-hCPjZK:visited,
+.bUXYna:link,
+.bUXYna:visited {
   color: #ecf0f1 !important;
   text-decoration: none;
 }
@@ -481,6 +481,11 @@ body {
   text-decoration: none;
   display: block;
   padding: 1rem 0;
+}
+
+main,
+.main-content {
+  overflow: scroll !important;
 }
 
 .main-content {
