@@ -16,6 +16,9 @@ export default function AdminView() {
             <li>
               <Link to='/admin/user'>User</Link>
             </li>
+            <li>
+              <Link to='/admin/order'>Order</Link>
+            </li>
           </ul>
         </nav>
       </aside>

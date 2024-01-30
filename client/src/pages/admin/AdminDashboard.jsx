@@ -14,8 +14,13 @@ export default function AdminDashboard() {
       const response = await Promise.all([
         axios.get('/api/user'),
         axios.get('/api/product'),
+        axios.get('/api/order'),
       ]);
-      setResponses({ user: response[0].data, product: response[1].data });
+      setResponses({
+        user: response[0].data,
+        product: response[1].data,
+        order: response[2].data,
+      });
     } catch (err) {
       console.error(`Error fetching data: `, err);
     }
@@ -41,6 +46,25 @@ export default function AdminDashboard() {
           <p>Document Count: {responses.user.length}</p>
           <p>All properties: email, password</p>
         </div>
+      </div>
+      <div className='server-status'>
+        <h2>Order Collection</h2>
+
+        <div className='server'>
+          <p>Document Count: {responses.user.length}</p>
+          <p>
+            All properties: email, Order Status, Payment Status, Shipping
+            Address
+          </p>
+        </div>
+        <a
+          href='https://dashboard.stripe.com/login?locale=en-AU'
+          target='_blank'
+          rel='noreferrer'
+        >
+          {' '}
+          Go to Payment information
+        </a>
       </div>
     </>
   );

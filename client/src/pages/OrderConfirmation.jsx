@@ -21,24 +21,20 @@ const OrderConfirmation = () => {
   if (!USER.isLoggedIn) {
     return <Navigate to='/user/login' replace={true} />;
   }
+
   return (
-    <Container
-      className='d-flex justify-content-center align-items-center'
-      style={{ minHeight: '100vh' }}
-    >
+    <Container className='d-flex justify-content-center align-items-center'>
       <Row>
-        <Col lg='6' md='8' sm='10' xs='12'>
-          <Card className='text-center'>
+        <Col>
+          <Card className='order-confirmation-card text-center'>
             <CardBody>
-              <div className='mb-4'>
+              <div className='mb-4 order-confirmation-icon'>
                 {/* You can replace this with an SVG or an image */}
-                <div className='text-success' style={{ fontSize: '2.5rem' }}>
-                  <i className='fas fa-check-circle'></i>
-                </div>
+                <i className='fas fa-check-circle'></i>
               </div>
-              <h2>Hey {email}</h2>
+              <h2 className='order-confirmation-heading'>Hey {email}</h2>
               <h3 className='text-success'>Your Order is Confirmed!</h3>
-              <p>
+              <p className='order-confirmation-message'>
                 Thank you for your order from our bakery! We're currently
                 preparing your delicious baked goods with care.
               </p>
@@ -46,7 +42,7 @@ const OrderConfirmation = () => {
                 tag='a'
                 href={`/order/${orderId}`}
                 color='primary'
-                className='mt-4'
+                className='mt-4 order-confirmation-button'
               >
                 Check Status
               </Button>

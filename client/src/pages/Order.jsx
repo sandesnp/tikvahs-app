@@ -107,7 +107,7 @@ const OrderSummary = () => {
                 </Col>
                 <Col>
                   <CardText className='text-right'>
-                    <strong>£{Total}</strong>
+                    <strong>${Total}</strong>
                   </CardText>
                 </Col>
               </Row>

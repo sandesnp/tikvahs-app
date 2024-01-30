@@ -20,6 +20,7 @@ import Header from './components/headers/light';
 import PurchaseHistory from 'pages/PurchaseHistory';
 import Order from 'pages/Order';
 import OrderConfirmation from 'pages/OrderConfirmation';
+import OrderManagement from 'pages/admin/OrderManagement';
 
 export default function App() {
   // const USER = useSelector((state) => state.User);
@@ -61,6 +62,7 @@ export default function App() {
             <Route path='/admin/dashboard' element={<AdminDashboard />} />
             <Route path='/admin/user' element={<UserManagement />} />
             <Route path='/admin/product' element={<ProductManagement />} />
+            <Route path='/admin/order' element={<OrderManagement />} />
           </Route>
         </Routes>
         <Footer />

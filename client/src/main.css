@@ -736,4 +736,40 @@ main,
 .input:focus {
   border-color: #3498db;
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.order-confirmation-card {
+  padding: 2rem;
+  border: none;
+  box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+  background-color: #fff;
+}
+
+.order-confirmation-icon {
+  color: #28a745; /* Success green */
+  font-size: 2.5rem;
+}
+
+.order-confirmation-heading {
+  color: #333; /* Dark grey for better readability */
+  margin-bottom: 1rem;
+}
+
+.order-confirmation-message {
+  font-size: 1rem;
+  color: #555; /* Medium grey for the message */
+}
+
+.order-confirmation-button {
+  padding: 0.5rem 2rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+/* Centering the card in the column */
+.d-flex.justify-content-center {
+  display: flex;
+  justify-content: center;
 }/*# sourceMappingURL=main.css.map */

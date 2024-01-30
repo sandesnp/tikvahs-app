@@ -27,7 +27,7 @@ route.get('/', async (req, res) => {
         'price',
         'imageUrl',
       ])
-      .populate('deliveryPerson', ['email', 'userType']);
+      .populate('user', ['email']);
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
